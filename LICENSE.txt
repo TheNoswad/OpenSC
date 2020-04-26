@@ -1,0 +1,56 @@
+License of source code:
+-----------------------
+Copyright (C) YearStart-YearEnd YourNameOrNickName <YourEMailAddress>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+--
+-- You can also use other licenses as well, but that's the recommended one by Minetest.
+-- If you want, you can add the very complete license to a new file: LICENSE.<license name>.txt
+
+
+License of media (textures, sounds, meshes):
+--------------------------------------------
+(by Authors)
+
+AuthorName (LicenseName):
+  texture.png
+  mesh.obj
+  mesh.b3d
+  sound.ogg
+  schematic.mts
+
+-- Here is an example:
+LonelyShark (CC BY-SA 3.0):
+  building_pick_ruby.png
+  building_pick_break.*.ogg
+  building_cottage.mts
+
+
+-- Pay attention that at the beginning of every line with a media name,
+-- has to start with two normal blanks, no tabs.
+
+
+Details of Licenses:
+--------------------
+
+CC BY-SA 3.0:
+  Attribution-ShareAlike 3.0 Unported
+  http://creativecommons.org/licenses/by-sa/3.0/
+
+-- Replace YearStart, YearEnd, YourNameOrNickName, YourEMailAddress,
+-- AuthorName, LicenseName
+-- Add all media files, your mod has
+-- Remove the examples
+-- REMOVE EVERY LINE THAT STARTS WITH A DOUBLE HYPHEN (--)!
