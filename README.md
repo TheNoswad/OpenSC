@@ -1,4 +1,5 @@
-# Minetest Mod YourModName
+# OpenSC
+# Open Source Reimplementation Of The Game "Survivalcraft"
 Version 1.0, Status: alpha/beta/stable, License: LGPLv2.1/CC BY-SA 3.0
 
 -- Replace Version, Status and License, if necessary.
