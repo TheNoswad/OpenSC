@@ -152,7 +152,7 @@ function chunks.get_chunk_data(chunkoffset)
     local data = {}
     local positioninchunk = "0"
 
-    for i=1,65540 do
+    for i=1,65536 do
         local onebyte = io.read(1)
         local onebyte = struct.unpack('B', onebyte)
         table.insert(data, onebyte)
@@ -174,7 +174,6 @@ chunks.get_dictionary_entry = get_dictionary_entry
 ]]
 
 
-return chunks
 -- Test codes down here!
 
 
@@ -212,12 +211,10 @@ local a, b, c = get_dictionary_entry(2)
 --[[
 local datao = {}
 local datao = chunks.get_chunk_data(0)
-print(datao[1])
-print(datao[2])
-print(datao[3])
-print(datao[4])
-print(datao[5])
-print(datao[6])
-print(datao[7])
-print(datao[8])
+print(datao[4095])
+print(datao[4096])
+print(datao[4097])
 ]]
+
+
+return chunks

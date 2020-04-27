@@ -32,14 +32,26 @@ local function grass_to_dirt(pos1, pos2)
     print(data_from_a_chunk[2])
     print(data_from_a_chunk[3])
 
+
+    local xcurr = "0"
+    local ycurr = "0"
+    local zcurr = "0"
+    local blockcounter = "0"
     -- Modify data
     for z = pos1.z, pos2.z do
-        print("tabz" .. z)
+        --print("tabz" .. z)
         for x = pos1.x, pos2.x do
-            print("tabx" .. x)
+            --print("tabx" .. x)
             for y = pos1.y, pos2.y do
                 --print("taby" .. y)
-                local vi = a:index(x, (y + x) + (1+ z *17)+16, z)
+                --old                local vi = a:index(x, (y + x) + (1+ z *17)+16, z)
+                --old                local vi = a:index(x, y+(17*z)+x, z)
+
+                --local ycurr = (y + x) + (1+ z *17)+16
+                local ycurr = y
+            
+
+                local vi = a:index(x, ycurr, z)
                 --if data[vi] == c_grass then
                 if data_from_a_chunk[listcounter] == 1 then
                     data[vi] = c_bedrock
@@ -75,18 +87,20 @@ function worldloader.testaprint(arg1, arg2, arg3)
     print("hi")
 end
 
+-- A chunk's origin is at the starting coordinate of it. Ex: (x,y,z)  16, 0, 16     35, 255, 31
+--                                                           The origin would be 16
 
 
 
 local thingie1 = {}
 local thingie2 = {}
-thingie1.x = 0
+thingie1.x = 16
 thingie1.y = 0
-thingie1.z = 0
+thingie1.z = 16
 
-thingie2.x = 16
-thingie2.y = 256
-thingie2.z = 16
+thingie2.x = 31
+thingie2.y = 255
+thingie2.z = 31
 
 grass_to_dirt(thingie1, thingie2)
 --[[
