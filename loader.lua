@@ -14,7 +14,7 @@ local chunks = dofile( OpenSCmodpath .. "/chunks.lua")
 
 local chunkdata = {}
 
-local function grass_to_dirt(pos1, pos2)
+local function load_chunk_into_world(pos1, pos2)
     -- Read data into LVM
     print("reading into lvm")
     local vm = minetest.get_voxel_manip()
@@ -26,16 +26,9 @@ local function grass_to_dirt(pos1, pos2)
     local data = vm:get_data()
     local listcounter = 1
 
-    -- Get the data from a chunk and store it.
+    -- Get the data from the requested chunk and store it.
     local data_from_a_chunk = chunks.get_chunk_data(0)
-    print(data_from_a_chunk[1])
-    print(data_from_a_chunk[2])
-    print(data_from_a_chunk[3])
 
-
-    local xcurr = "0"
-    local ycurr = "0"
-    local zcurr = "0"
     local blockcounter = "0"
     -- Modify data
     for z = pos1.z, pos2.z do
@@ -43,15 +36,10 @@ local function grass_to_dirt(pos1, pos2)
         for x = pos1.x, pos2.x do
             --print("tabx" .. x)
             for y = pos1.y, pos2.y do
-                --print("taby" .. y)
-                --old                local vi = a:index(x, (y + x) + (1+ z *17)+16, z)
-                --old                local vi = a:index(x, y+(17*z)+x, z)
 
-                --local ycurr = (y + x) + (1+ z *17)+16
-                local ycurr = y
-            
+                -- Sets the position inside the voxel manipulator
+                local vi = a:index(x, y, z)
 
-                local vi = a:index(x, ycurr, z)
                 --if data[vi] == c_grass then
                 if data_from_a_chunk[listcounter] == 1 then
                     data[vi] = c_bedrock
@@ -78,8 +66,9 @@ local function grass_to_dirt(pos1, pos2)
         end
     end
 
-    -- Write data
+    -- Set the final data in the voxel manipulator
     vm:set_data(data)
+    -- Write the final data to the map
     vm:write_to_map(true)
 end
 
@@ -88,10 +77,10 @@ function worldloader.testaprint(arg1, arg2, arg3)
 end
 
 -- A chunk's origin is at the starting coordinate of it. Ex: (x,y,z)  16, 0, 16     35, 255, 31
---                                                           The origin would be 16
+--                                                           The origin would be 16, 16
 
 
-
+print("offset is ".. chunks.get_chunk_offset(-9, -3))
 local thingie1 = {}
 local thingie2 = {}
 thingie1.x = 16
@@ -102,7 +91,7 @@ thingie2.x = 31
 thingie2.y = 255
 thingie2.z = 31
 
-grass_to_dirt(thingie1, thingie2)
+load_chunk_into_world(thingie1, thingie2)
 --[[
 local data_from_a_chunk = chunks.get_chunk_data(0)
 print(data_from_a_chunk[1])
