@@ -15,10 +15,25 @@ local chunks = dofile( OpenSCmodpath .. "/chunks.lua")
 local chunkdata = {}
 
 local function load_chunk_into_world(pos1, pos2)
+
+    -- Sets up the array to store coordinate values for the lvm
+    local chunk_coords_near = {}
+    local chunk_coords_far = {}
+
+    -- This is the origin of the chunk
+    chunk_coords_near.x = pos1 *16
+    chunk_coords_near.y = 0
+    chunk_coords_near.z = pos2 *16
+
+    -- Add 15 to calculate the far origin(The ending corner of the chunk)
+    chunk_coords_far.x = (pos1 * 16) + 15
+    chunk_coords_far.y = 255
+    chunk_coords_far.z = (pos2 * 16) + 15
+    
     -- Read data into LVM
     print("reading into lvm")
     local vm = minetest.get_voxel_manip()
-    local emin, emax = vm:read_from_map(pos1, pos2)
+    local emin, emax = vm:read_from_map(chunk_coords_near, chunk_coords_far)
     local a = VoxelArea:new{
         MinEdge = emin,
         MaxEdge = emax
@@ -26,16 +41,20 @@ local function load_chunk_into_world(pos1, pos2)
     local data = vm:get_data()
     local listcounter = 1
 
+    local chunk_offset =chunks.get_chunk_offset(pos1, pos2)
     -- Get the data from the requested chunk and store it.
-    local data_from_a_chunk = chunks.get_chunk_data(0)
+    local data_from_a_chunk = chunks.get_chunk_data(chunk_offset)
 
     local blockcounter = "0"
+
+    print("Loading chunk at origin".. chunk_coords_near.x, chunk_coords_near.z)
+
     -- Modify data
-    for z = pos1.z, pos2.z do
+    for z = chunk_coords_near.z, chunk_coords_far.z do
         --print("tabz" .. z)
-        for x = pos1.x, pos2.x do
+        for x = chunk_coords_near.x, chunk_coords_far.x do
             --print("tabx" .. x)
-            for y = pos1.y, pos2.y do
+            for y = chunk_coords_near.y, chunk_coords_far.y do
 
                 -- Sets the position inside the voxel manipulator
                 local vi = a:index(x, y, z)
@@ -80,7 +99,7 @@ end
 --                                                           The origin would be 16, 16
 
 
-print("offset is ".. chunks.get_chunk_offset(-9, -3))
+--print("offset is ".. chunks.get_chunk_offset(-9, -4))
 local thingie1 = {}
 local thingie2 = {}
 thingie1.x = 16
@@ -91,7 +110,11 @@ thingie2.x = 31
 thingie2.y = 255
 thingie2.z = 31
 
-load_chunk_into_world(thingie1, thingie2)
+load_chunk_into_world(-9, -4)
+load_chunk_into_world(-9, -3)
+load_chunk_into_world(-9, -2)
+load_chunk_into_world(-8, -4)
+load_chunk_into_world(-8, -3)
 --[[
 local data_from_a_chunk = chunks.get_chunk_data(0)
 print(data_from_a_chunk[1])
