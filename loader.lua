@@ -50,9 +50,9 @@ local function load_chunk_into_world(pos1, pos2)
     print("Loading chunk at origin".. chunk_coords_near.x, chunk_coords_near.z)
 
     -- Modify data
-    for z = chunk_coords_near.z, chunk_coords_far.z do
+    for x = chunk_coords_near.x, chunk_coords_far.x do
         --print("tabz" .. z)
-        for x = chunk_coords_near.x, chunk_coords_far.x do
+        for z = chunk_coords_near.z, chunk_coords_far.z do
             --print("tabx" .. x)
             for y = chunk_coords_near.y, chunk_coords_far.y do
 
