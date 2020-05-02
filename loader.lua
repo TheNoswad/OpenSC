@@ -6,6 +6,17 @@ local c_bedrock = minetest.get_content_id("default:stone_with_tin")
 local c_sand = minetest.get_content_id("default:sand")
 local c_stone = minetest.get_content_id("default:stone")
 
+
+local OpenSC_Content_IDS = {}
+
+
+-- Sets up content id's in a table so it is faster.
+for x = 0, 19 do
+    print("working", x)
+    table.insert(OpenSC_Content_IDS, x, minetest.get_content_id(OpenSCBlockIds[x]))
+end
+
+
 local worldloader = {}
 
 print("The thing is running!")
@@ -56,12 +67,13 @@ local function load_chunk_into_world(pos1, pos2)
             --print("tabx" .. x)
             for y = chunk_coords_near.y, chunk_coords_far.y do
 
-                -- Sets the position inside the voxel manipulator
                 local vi = a:index(x, y, z)
-
+                --local currentdata = data_from_a_chunk[listcounter]--OpenSCBlockIds[currentdata]
+                --print("the data is" .. data_from_a_chunk[listcounter] .. "end")
                 --if data[vi] == c_grass then
-                if data_from_a_chunk[listcounter] == 1 then
-                    data[vi] = c_bedrock
+                if true then
+                    data[vi] = OpenSC_Content_IDS[data_from_a_chunk[listcounter]]
+                    --data[vi] = OpenSCBlockIds[data_from_a_chunk[listcounter]]
                     --print("found air!")
                     --print(data_from_a_chunk[listcounter])
                     listcounter = listcounter + 1
@@ -91,42 +103,33 @@ local function load_chunk_into_world(pos1, pos2)
     vm:write_to_map(true)
 end
 
-function worldloader.testaprint(arg1, arg2, arg3)
-    print("hi")
-end
 
 -- A chunk's origin is at the starting coordinate of it. Ex: (x,y,z)  16, 0, 16     35, 255, 31
 --                                                           The origin would be 16, 16
-
-
---print("offset is ".. chunks.get_chunk_offset(-9, -4))
-local thingie1 = {}
-local thingie2 = {}
-thingie1.x = 16
-thingie1.y = 0
-thingie1.z = 16
-
-thingie2.x = 31
-thingie2.y = 255
-thingie2.z = 31
 
 load_chunk_into_world(-9, -4)
 load_chunk_into_world(-9, -3)
 load_chunk_into_world(-9, -2)
 load_chunk_into_world(-8, -4)
 load_chunk_into_world(-8, -3)
---[[
-local data_from_a_chunk = chunks.get_chunk_data(0)
-print(data_from_a_chunk[1])
-print(data_from_a_chunk[2])
-print(data_from_a_chunk[3])
-print(data_from_a_chunk[4])
-print(data_from_a_chunk[5])
-print(data_from_a_chunk[6])
-print(data_from_a_chunk[7])
-print(data_from_a_chunk[8])
-print(data_from_a_chunk[9])
-print(data_from_a_chunk[10])
-]]
+load_chunk_into_world(-8, -2)
+load_chunk_into_world(-8, -1)
+load_chunk_into_world(-8, 0)
+load_chunk_into_world(-8, 1)
+load_chunk_into_world(-7, 2)
+load_chunk_into_world(-7, -4)
+load_chunk_into_world(-7, -3)
+load_chunk_into_world(-7, -1)
+load_chunk_into_world(-7, 0)
+load_chunk_into_world(-7, 1)
+load_chunk_into_world(-8, 2)
+load_chunk_into_world(-6, -4)
+load_chunk_into_world(-6, -3)
+load_chunk_into_world(-6, -2)
+load_chunk_into_world(-6, -1)
+load_chunk_into_world(-6, 0)
+load_chunk_into_world(-6, 1)
+load_chunk_into_world(-9, 2)
+
 
 return worldloader

@@ -181,7 +181,6 @@ function chunks.get_chunk_offset(originx, originz)
         local readzpos = struct.unpack('i', readzpos)
         local readoffset = struct.unpack('i', readoffset)
         print(readxpos)
-        print(readzpos)
         print(readoffset)
 
         if readxpos == originx then
