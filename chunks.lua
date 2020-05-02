@@ -20,7 +20,7 @@ local struct = require "struct"
 local struct = dofile( OpenSCmodpath .. "/struct.lua")
 
 
-
+-- Creates an array for storing our functions
 local chunks = {}
 
 
@@ -38,7 +38,7 @@ local fileName = '/home/dawson/snap/minetest/current/mods/opensc/Chunks32h.dat'
 -- Opens the actual file!
 local file = assert(io.open(fileName, 'rb'))
 
--- Sets the file as default
+-- Sets the file as the one we are working on
 io.input(file)
 
 
@@ -115,7 +115,7 @@ local function get_dictionary_entry(entryoffset)
 end
 
 -- To get block chunk place in file do (the offset * block chunk size (263184)) + dictionary size(786444)
--- DONT FORGET HEADER IS the header(16bytes)
+-- DONT FORGET HEADER IS (16bytes)
 
 local function get_chunk_location(chunkoffset)
     --the code
@@ -152,7 +152,7 @@ function chunks.get_chunk_data(chunkoffset)
     local data = {}
     local positioninchunk = "0"
 
-    for i=1,65540 do
+    for i=1,65536 do
         local onebyte = io.read(1)
         local onebyte = struct.unpack('B', onebyte)
         table.insert(data, onebyte)
@@ -164,60 +164,43 @@ function chunks.get_chunk_data(chunkoffset)
 
 end
 
---chunks.get_chunk_data = function(chunkoffset)
---    get_chunk_data(chunkoffset)
---end
---[[
-chunks.get_chunk_data = get_chunk_data
-chunks.get_chunk_location = get_chunk_location
-chunks.get_dictionary_entry = get_dictionary_entry
-]]
+function chunks.get_chunk_offset(originx, originz)
+    print("Getting chunk offset for".. originx..   originz)
+    file:seek("set", 0)
+    local readxpos = "0"
+    local readzpos = "0"
+    local readoffset = "0"
+    local breakout = 0
 
+    while true do
+        local readxpos = io.read(4)
+        local readzpos = io.read(4)
+        local readoffset = io.read(4)
 
-return chunks
+        local readxpos = struct.unpack('i', readxpos)
+        local readzpos = struct.unpack('i', readzpos)
+        local readoffset = struct.unpack('i', readoffset)
+        print(readxpos)
+        print(readoffset)
+
+        if readxpos == originx then
+            if readzpos == originz then
+                print("Found the requested chunk")
+                return readoffset
+            else
+                print("Nope, Not that one")
+            end
+        end
+        -- Checks to see if we reached the end of the chunks (-1, -1, 0)
+        if readoffset == -1 then
+            print("Did not find the requested chunk. Aborting.")
+            return readoffset
+        end
+end
+return readoffset
+end
+
 -- Test codes down here!
 
 
-
-
-
---[[
-local a, b, c = get_dictionary_entry(0)
-print(a) -- The X Coordnate of the requested chunk
-print(b) -- The Z Coordnate of the requested chunk
-print(c) -- The Index of the requested chunk
-
-local a, b, c = get_dictionary_entry(1)
-print(a) -- The X Coordnate of the requested chunk
-print(b) -- The Z Coordnate of the requested chunk
-print(c) -- The Index of the requested chunk
-
-local a, b, c = get_dictionary_entry(2)
---print(a) -- The X Coordnate of the requested chunk
---print(b) -- The Z Coordnate of the requested chunk
---print(c) -- The Index of the requested chunk
-
---print(get_chunk_location(0))
---print(get_chunk_location(1))
---print(get_chunk_location(2))
---print(get_chunk_location(3))
---print(get_chunk_location(4))
---print(get_chunk_location(5))
-
-
-]]
---print(get_chunk_location(0))
-
-
---[[
-local datao = {}
-local datao = chunks.get_chunk_data(0)
-print(datao[1])
-print(datao[2])
-print(datao[3])
-print(datao[4])
-print(datao[5])
-print(datao[6])
-print(datao[7])
-print(datao[8])
-]]
+return chunks

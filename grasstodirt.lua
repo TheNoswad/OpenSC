@@ -31,10 +31,11 @@ local function grass_to_dirt(pos1, pos2)
     vm:set_data(data)
     vm:write_to_map(true)
 end
-
+--[[
 function testaprint(arg1, arg2, arg3)
     print("hi")
 end
+]]
 
 local thingie1 = {}
 local thingie2 = {}

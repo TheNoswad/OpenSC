@@ -30,6 +30,9 @@ function worldloader.testforlearn(nothing)
     print(a)
 
     local data = vm:get_data()
+    local x = "1"
+    local y = "1"
+    local z = "1"
 
 
     -- Get node's index

@@ -3,13 +3,16 @@
 --local worldloader = require "/home/dawson/snap/minetest/current/mods/opensc/grasstodirt.lua"
 OpenSCmodpath = minetest.get_modpath( "opensc" )
 
+-- Init the blocks definitons for opensc
+dofile( OpenSCmodpath .. "/blocks.lua")
 
+-- Maybe we can see this?
 
 minetest.after(5,
         function(params)
         local worldloader = dofile( OpenSCmodpath .. "/loader.lua")
         --local worldloader
-        worldloader.testaprint()
+        --worldloader.testaprint()
 
         print("Hello, World")
 	end
