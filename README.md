@@ -9,6 +9,6 @@ This repository is a collection of code and assets to open Survivalcraft 2 world
 
 ## Helpful Links
 
-* [GitHub](http://github.com/lnj2/mod_template/)
+* [Minetest Mod Template](http://github.com/lnj2/mod_template/)
 * [Survivalcraft](https://kaalus.wordpress.com/)
 * [Minetest](https://www.minetest.net/)
