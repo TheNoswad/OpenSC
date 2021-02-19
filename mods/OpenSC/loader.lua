@@ -1,12 +1,43 @@
 -- Get content IDs during load time, and store into a local
-local c_dirt  = minetest.get_content_id("default:dirt")
-local c_grass = minetest.get_content_id("default:dirt_with_grass")
-local c_air   = minetest.get_content_id("air")
-local c_bedrock = minetest.get_content_id("default:stone_with_tin")
-local c_sand = minetest.get_content_id("default:sand")
-local c_stone = minetest.get_content_id("default:stone")
+--local c_dirt  = minetest.get_content_id("default:dirt")
+--local c_grass = minetest.get_content_id("default:dirt_with_grass")
+--local c_air   = minetest.get_content_id("air")
+--local c_bedrock = minetest.get_content_id("default:stone_with_tin")
+--local c_sand = minetest.get_content_id("default:sand")
+--local c_stone = minetest.get_content_id("default:stone")
+
+-- Import the xml to lua lib
+--[[
+local xmltolua = dofile( OpenSCmodpath .. "/xml2lua/xml2lua.lua")
+local handler = dofile( OpenSCmodpath .. "/xml2lua/xmlhandler/tree.lua")
+
+local xml = [[
+<people>
+  <person type="natural">
+    <name>Manoel</name>
+    <city>Palmas-TO</city>
+  </person>
+  <person type="legal">
+    <name>University of Brasília</name>
+    <city>Brasília-DF</city>
+  </person>
+</people>
+]]
+--[[
+--Instantiates the XML parser
+local parser = xml2lua.parser(handler)
+parser:parse(xml)
+
+--Manually prints the table (since the XML structure for this example is previously known)
+for i, p in pairs(handler.root.people.person) do
+  print(i, "Name:", p.name, "City:", p.city, "Type:", p._attr.type)
+end
+--local handler = require("xmlhandler.tree")
 
 
+--local xml2lua = require("xml2lua/xml2lua")
+--]]
+--]]
 local OpenSC_Content_IDS = {}
 
 
