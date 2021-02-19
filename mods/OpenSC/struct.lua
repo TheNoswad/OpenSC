@@ -98,15 +98,15 @@ function struct.pack(format, ...)
       table.insert(stream, string.char(0))
     elseif opt == 'c' then
       local n = format:sub(i + 1):match('%d+')
-      local length = tonumber(n)
-
-      if length > 0 then
-        local str = tostring(table.remove(vars, 1))
-        if length - str:len() > 0 then
-          str = str .. string.rep(' ', length - str:len())
-        end
-        table.insert(stream, str:sub(1, length))
+      local str = tostring(table.remove(vars, 1))
+      local len = tonumber(n)
+      if len <= 0 then
+        len = str:len()
       end
+      if len - str:len() > 0 then
+        str = str .. string.rep(' ', len - str:len())
+      end
+      table.insert(stream, str:sub(1, len))
       i = i + n:len()
     end
   end
@@ -175,7 +175,7 @@ function struct.unpack(format, stream, pos)
     elseif opt == 's' then
       local bytes = {}
       for j = iterator, stream:len() do
-        if stream:sub(j, j) == string.char(0) then
+        if stream:sub(j,j) == string.char(0) or  stream:sub(j) == '' then
           break
         end
 
@@ -187,8 +187,13 @@ function struct.unpack(format, stream, pos)
       table.insert(vars, str)
     elseif opt == 'c' then
       local n = format:sub(i + 1):match('%d+')
-      table.insert(vars, stream:sub(iterator, iterator + tonumber(n)-1))
-      iterator = iterator + tonumber(n)
+      local len = tonumber(n)
+      if len <= 0 then
+        len = table.remove(vars)
+      end
+
+      table.insert(vars, stream:sub(iterator, iterator + len - 1))
+      iterator = iterator + len
       i = i + n:len()
     end
   end

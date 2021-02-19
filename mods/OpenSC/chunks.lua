@@ -33,7 +33,8 @@ local seekposition = "0"
 
 -- The file path for the chunks file
 -- Debugging and deving temp
-local fileName = '/home/dawson/snap/minetest/current/mods/opensc/Chunks32h.dat'
+local fileName = 'put chunksfile here'
+
 
 -- Opens the actual file!
 local file = assert(io.open(fileName, 'rb'))
@@ -176,12 +177,12 @@ function chunks.get_chunk_offset(originx, originz)
         local readxpos = io.read(4)
         local readzpos = io.read(4)
         local readoffset = io.read(4)
-
+        minetest.debug(readzpos)
         local readxpos = struct.unpack('i', readxpos)
         local readzpos = struct.unpack('i', readzpos)
         local readoffset = struct.unpack('i', readoffset)
-        print(readxpos)
-        print(readoffset)
+        --print(readxpos)
+        --print(readoffset)
 
         if readxpos == originx then
             if readzpos == originz then
