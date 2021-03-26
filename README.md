@@ -1,4 +1,7 @@
 # OpenSC
-Survivalcraft multitool
+Survivalcraft multitool made with the Godot engine.
+
+
 
 This readme needs improvement
+
