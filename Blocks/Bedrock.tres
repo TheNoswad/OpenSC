@@ -1,0 +1,10 @@
+[gd_resource type="CubeMesh" load_steps=3 format=2]
+
+[ext_resource path="res://textures/Bedrock.png" type="Texture" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 3, 2, 1 )
+
+[resource]
+material = SubResource( 1 )
