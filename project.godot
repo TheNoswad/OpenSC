@@ -24,6 +24,10 @@ config/name="Blocks"
 run/main_scene="res://Furniture_Viewer.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Gdc="*res://Scripts/GDC.gd"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "better-texture-array" )

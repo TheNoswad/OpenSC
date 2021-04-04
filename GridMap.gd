@@ -8,7 +8,7 @@ var values = "164*0,1*21,3*0,1*21,4*0,1*21,3*0,1*21,4*0,1*21,3*0,1*21,4*0,5*21,7
 var resolution = 9
 
 # Called when the node enters the scene tree for the first time.
-func _ready():	
+func _ready():
 	var thethingarray = values.rsplit(",", true)
 	var linpos = 0
 	

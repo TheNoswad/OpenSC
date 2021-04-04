@@ -74,3 +74,12 @@ margin_bottom = 44.0
 margin_right = 124.0
 margin_bottom = 20.0
 text = "Yes. It's a Button!"
+
+[node name="FileDialog" type="FileDialog" parent="VBoxContainer/HBoxContainer"]
+margin_right = 315.0
+margin_bottom = 130.0
+window_title = "Open a File"
+mode = 0
+access = 2
+current_dir = "/Users/noswa/Documents/OpenSC"
+current_path = "/Users/noswa/Documents/OpenSC/"
