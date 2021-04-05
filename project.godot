@@ -30,7 +30,7 @@ Gdc="*res://Scripts/GDC.gd"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "better-texture-array" )
+enabled=PoolStringArray(  )
 
 [importer_defaults]
 

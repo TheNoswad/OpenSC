@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Pericles_Font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://FileDialog.gd" type="Script" id=2]
+[ext_resource path="res://StartButton.gd" type="Script" id=3]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -35,51 +37,40 @@ margin_right = 638.0
 margin_bottom = 44.0
 columns = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/GridContainer"]
-margin_right = 124.0
-margin_bottom = 20.0
-
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer/MarginContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer"]
 margin_right = 124.0
 margin_bottom = 20.0
 text = "Yes. It's a Button!"
+script = ExtResource( 3 )
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer/GridContainer"]
+[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer"]
 margin_left = 128.0
 margin_right = 252.0
 margin_bottom = 20.0
-
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer/MarginContainer2"]
-margin_right = 124.0
-margin_bottom = 20.0
 text = "Yes. It's a Button!"
 
-[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer/GridContainer"]
+[node name="Button3" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer"]
 margin_top = 24.0
 margin_right = 124.0
 margin_bottom = 44.0
-
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer/MarginContainer3"]
-margin_right = 124.0
-margin_bottom = 20.0
 text = "Yes. It's a Button!"
 
-[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/HBoxContainer/GridContainer"]
+[node name="Button4" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer"]
 margin_left = 128.0
 margin_top = 24.0
 margin_right = 252.0
 margin_bottom = 44.0
-
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer/MarginContainer4"]
-margin_right = 124.0
-margin_bottom = 20.0
 text = "Yes. It's a Button!"
 
-[node name="FileDialog" type="FileDialog" parent="VBoxContainer/HBoxContainer"]
-margin_right = 315.0
-margin_bottom = 130.0
+[node name="FileDialog" type="FileDialog" parent="VBoxContainer"]
+visible = true
+margin_top = 165.0
+margin_right = 1025.0
+margin_bottom = 295.0
+rect_min_size = Vector2( 200, 130 )
 window_title = "Open a File"
+resizable = true
 mode = 0
-access = 2
-current_dir = "/Users/noswa/Documents/OpenSC"
-current_path = "/Users/noswa/Documents/OpenSC/"
+script = ExtResource( 2 )
+[connection signal="button_down" from="VBoxContainer/HBoxContainer/GridContainer/Button" to="VBoxContainer/FileDialog" method="_on_Button_button_down"]
+[connection signal="file_selected" from="VBoxContainer/FileDialog" to="VBoxContainer/FileDialog" method="_on_FileDialog_file_selected"]

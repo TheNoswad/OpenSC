@@ -1,21 +1,26 @@
-extends Node
+extends FileDialog
 
-##This is the global data cashe.
-##The global data cashe manages cashed data
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var test = 420
-var selected_file_path = null
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("GDC Init")
+	pass
 
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_Button_button_down():
+	popup()
+
+
+func _on_FileDialog_file_selected(path):
+	Gdc.selected_file_path = path
+	print("selected_file_path = " + Gdc.selected_file_path)
