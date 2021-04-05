@@ -24,3 +24,5 @@ func _on_Button_button_down():
 func _on_FileDialog_file_selected(path):
 	Gdc.selected_file_path = path
 	print("selected_file_path = " + Gdc.selected_file_path)
+	Gdc.filename = current_file
+	Gdc.open()

@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://FileDialog.gd" type="Script" id=1]
+[ext_resource path="res://StartButton.gd" type="Script" id=2]
+[ext_resource path="res://Pericles_Font.tres" type="DynamicFont" id=3]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 1025.0
+margin_bottom = 590.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1025.0
+margin_bottom = 113.0
+custom_fonts/font = ExtResource( 3 )
+text = "OpenSC"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 117.0
+margin_right = 1025.0
+margin_bottom = 161.0
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 386.0
+margin_right = 638.0
+margin_bottom = 44.0
+columns = 2
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer"]
+margin_right = 124.0
+margin_bottom = 20.0
+text = "Open File"
+script = ExtResource( 2 )
+
+[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer"]
+margin_left = 128.0
+margin_right = 252.0
+margin_bottom = 20.0
+text = "Yes. It's a Button!"
+
+[node name="Button3" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer"]
+margin_top = 24.0
+margin_right = 124.0
+margin_bottom = 44.0
+text = "Yes. It's a Button!"
+
+[node name="Button4" type="Button" parent="VBoxContainer/HBoxContainer/GridContainer"]
+margin_left = 128.0
+margin_top = 24.0
+margin_right = 252.0
+margin_bottom = 44.0
+text = "Yes. It's a Button!"
+
+[node name="FileDialog" type="FileDialog" parent="VBoxContainer"]
+margin_top = 165.0
+margin_right = 1025.0
+margin_bottom = 295.0
+rect_min_size = Vector2( 200, 130 )
+window_title = "Open a File"
+resizable = true
+mode = 0
+script = ExtResource( 1 )
+[connection signal="button_down" from="VBoxContainer/HBoxContainer/GridContainer/Button" to="VBoxContainer/FileDialog" method="_on_Button_button_down"]
+[connection signal="file_selected" from="VBoxContainer/FileDialog" to="VBoxContainer/FileDialog" method="_on_FileDialog_file_selected"]

@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/WorldViewer.gd" type="Script" id=1]
+[ext_resource path="res://Freecam.gd" type="Script" id=2]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="GridMap" type="GridMap" parent="."]
+data = {
+"cells": PoolIntArray(  )
+}
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_clip_": 0
+}
+
+[node name="Camera" type="Camera" parent="."]
+script = ExtResource( 2 )

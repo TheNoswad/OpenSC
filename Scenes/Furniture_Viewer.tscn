@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://BlockLibrary.tres" type="MeshLibrary" id=1]
+[ext_resource path="res://FurnitureViewer.gd" type="Script" id=2]
+[ext_resource path="res://Freecam.gd" type="Script" id=3]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource( 1 )
+data = {
+"cells": PoolIntArray(  )
+}
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_clip_": 0
+}
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.01733, 0, 0 )
+script = ExtResource( 3 )
