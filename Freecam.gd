@@ -9,9 +9,9 @@ var _total_pitch = 0.0
 # Movement state
 var _direction = Vector3(0.0, 0.0, 0.0)
 var _velocity = Vector3(0.0, 0.0, 0.0)
-var _acceleration = 30
+var _acceleration = 40
 var _deceleration = -10
-var _vel_multiplier = 4
+var _vel_multiplier = 20
 
 # Keyboard state
 var _w = false
@@ -32,9 +32,10 @@ func _input(event):
 			BUTTON_RIGHT: # Only allows rotation if right click down
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
 			BUTTON_WHEEL_UP: # Increases max velocity
-				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)
+				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 50)
 			BUTTON_WHEEL_DOWN: # Decereases max velocity
-				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 20)
+				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 50)
+				
 
 	# Receives key input
 	if event is InputEventKey:

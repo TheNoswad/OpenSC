@@ -1,11 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scenes/WorldViewer.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/WorldViewer.gd" type="Script" id=1]
 [ext_resource path="res://Freecam.gd" type="Script" id=2]
+[ext_resource path="res://BlockLibrary.tres" type="MeshLibrary" id=3]
+[ext_resource path="res://Scenes/Camera_Coords.gd" type="Script" id=4]
 
 [node name="Spatial" type="Spatial"]
 
 [node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource( 3 )
+cell_size = Vector3( 1, 1, 1 )
+cell_octant_size = 64
+cell_scale = 0.5
 data = {
 "cells": PoolIntArray(  )
 }
@@ -15,4 +21,14 @@ __meta__ = {
 }
 
 [node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0 )
+far = 687.9
 script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

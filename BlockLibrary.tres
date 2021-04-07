@@ -1,6 +1,25 @@
-[gd_resource type="MeshLibrary" load_steps=2 format=2]
+[gd_resource type="MeshLibrary" load_steps=11 format=2]
 
 [ext_resource path="res://Blocks/Bedrock.tres" type="CubeMesh" id=1]
+[ext_resource path="res://textures/Dirt.png" type="Texture" id=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="CubeMesh" id=2]
+material = SubResource( 1 )
+
+[sub_resource type="CubeMesh" id=3]
+
+[sub_resource type="CubeMesh" id=4]
+
+[sub_resource type="CubeMesh" id=5]
+
+[sub_resource type="CubeMesh" id=6]
+
+[sub_resource type="CubeMesh" id=7]
+
+[sub_resource type="CubeMesh" id=8]
 
 [resource]
 item/0/name = "Air"
@@ -12,3 +31,38 @@ item/1/mesh = ExtResource( 1 )
 item/1/mesh_transform = null
 item/1/shapes = [  ]
 item/1/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/2/name = "Dirt"
+item/2/mesh = SubResource( 2 )
+item/2/mesh_transform = null
+item/2/shapes = [  ]
+item/2/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/3/name = "Granite"
+item/3/mesh = SubResource( 3 )
+item/3/mesh_transform = null
+item/3/shapes = [  ]
+item/3/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/4/name = "Sandstone"
+item/4/mesh = SubResource( 4 )
+item/4/mesh_transform = null
+item/4/shapes = [  ]
+item/4/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/5/name = "Cobblestone"
+item/5/mesh = SubResource( 5 )
+item/5/mesh_transform = null
+item/5/shapes = [  ]
+item/5/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/6/name = "Gravel"
+item/6/mesh = SubResource( 6 )
+item/6/mesh_transform = null
+item/6/shapes = [  ]
+item/6/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/7/name = "Sand"
+item/7/mesh = SubResource( 7 )
+item/7/mesh_transform = null
+item/7/shapes = [  ]
+item/7/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/8/name = "Grass"
+item/8/mesh = SubResource( 8 )
+item/8/mesh_transform = null
+item/8/shapes = [  ]
+item/8/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
