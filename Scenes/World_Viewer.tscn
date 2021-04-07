@@ -10,7 +10,7 @@
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource( 3 )
 cell_size = Vector3( 1, 1, 1 )
-cell_octant_size = 64
+cell_octant_size = 16
 cell_scale = 0.5
 data = {
 "cells": PoolIntArray(  )
@@ -22,7 +22,7 @@ __meta__ = {
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0 )
-far = 687.9
+far = 21.3
 script = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="."]

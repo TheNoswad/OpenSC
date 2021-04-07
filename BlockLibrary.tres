@@ -5,6 +5,7 @@
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 3, 2, 1 )
 
 [sub_resource type="CubeMesh" id=2]
 material = SubResource( 1 )

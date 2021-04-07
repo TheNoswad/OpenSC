@@ -21,13 +21,14 @@ func load_chunk(chunk_location):
 	
 	#THIS WORKS!
 	#print(Gdc.chunk_cache[chunk_location][Vector3(0, 1, 13)])
-	
+	#print(Gdc.chunk_cache.get(chunk_location).size())
 	for key in Gdc.chunk_cache[chunk_location]:
 		# print("Placing blocks ")
 		#print(x + " " + y + "" + z)
 		#print(get_8(key.get()))
 		blockid = Gdc.chunk_cache[chunk_location][key]["block_id"]
-		#print(blockid)
+		#print(Gdc.chunk_cache[chunk_location])
+		#print(key)
 		
 			
 		set_cell_item(chunk_location_global.x + key.x, key.y, chunk_location_global.y + key.z, blockid)
@@ -37,10 +38,10 @@ func load_chunk(chunk_location):
 
 
 func _ready():
-	load_chunk(Vector2(0, 2))
-	#for i in Gdc.chunks_dictionary:
-	#	print(i)
-	#	load_chunk(i)
+	#load_chunk(Vector2(0, 3))
+	for i in Gdc.chunks_dictionary:
+		print(i)
+		load_chunk(i)
 		
 
 
