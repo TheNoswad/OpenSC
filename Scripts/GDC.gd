@@ -35,91 +35,90 @@ var chunk_cache = {}
 var block_data = {}
 
 var chunks_data_section_start = 786444
-var chunk_size = 132112
+var chunk_size = 263184
 var chunks_directory_size = 786444
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("GDC Init")
-
-func cache_world():
-	var ChunkX = 0
-	var ChunkY = 0
-	var offset = 0
-	print(str(ChunkX) + " " + str(ChunkY) + "" + str(offset))
 	
-	var block_id = 0
-	var light_value = 0
-	var block_state = 0
+func cache_dictionary():
+	var ChunkX = null
+	var ChunkY = null
+	var offset = null
+	thefile.seek(0)
 	
-	
-	
-	#iterates over the entire 65536 dictionary entries
-	#this needs to be a separate function for cleanliness
 	for n in 65536:
 		ChunkX = unsigned16_to_signed(thefile.get_32())
 		ChunkY = unsigned16_to_signed(thefile.get_32())
 		offset = unsigned16_to_signed(thefile.get_32())
 		#Sets the dict name to a vector2 of ChunkX and ChunkY and the value to the chunk offset
 		chunks_dictionary[Vector2(ChunkX, ChunkY)] = offset
+		print("cached directory entry: " + str(Vector2(ChunkX, ChunkY)))
 	print("Chunk Dictionary cached!")
 	
-	var chunkdata = 0
+func cache_chunk(location):
+	print("caching chunk: " + str(location))
+	#goto the chunk location
+	#           |the offset of the chunk| 
+	thefile.seek((chunks_dictionary[location] * chunk_size) + chunks_directory_size)
+	#print("parsing chunk: " + str(key))
+	#print("chunks_dictionary: " + str(chunks_dictionary[key]))
+	#print("the seeek pos: " + str(int(chunks_dictionary[key] * chunk_size) + chunks_directory_size))
 	
-	#cache each chunk?
-	for key in chunks_dictionary:
-		#goto the chunk location
-		#           |the offset of the chunk| 
-		thefile.seek((chunks_dictionary[key] * chunk_size) + chunks_directory_size)
-		#print("parsing chunk: " + str(key))
-		#print("chunks_dictionary: " + str(chunks_dictionary[key]))
-		#print("the seeek pos: " + str(int(chunks_dictionary[key] * chunk_size) + chunks_directory_size))
-		
-		#skip past the header
-		thefile.get_32()
-		thefile.get_32()
-		
-		var chunk_data = {}
-		
-		ChunkX = unsigned16_to_signed(thefile.get_32())
-		ChunkY = unsigned16_to_signed(thefile.get_32())
-		
-		for x in 16:
-			for y in 16:
-				for z in 256:
-					var databyte_1 = thefile.get_8()
-					var databyte_2 = thefile.get_8()
-					var databyte_3 = thefile.get_8()
-					var databyte_4 = thefile.get_8()
-					
-					#shift bits to get the bits!
-					#this is not finished. Idk how to fix it rn.
-					block_id = databyte_1
-					light_value = databyte_2 << 6
-					block_state = databyte_2 << 6
-					
-					block_data = {
-						block_id = block_id,
-						light_value = light_value,
-						block_state = block_state,
-					}
-					#block_data[Vector3(x, y, z)] = thefile.get_8()
-					#chunk_data[Vector3(x, z, y)] = unsigned16_to_signed(thefile.get_32())
-					
-					#chunk_data[Vector3(key.x, z, key.y)] = block_data
-					chunk_data[Vector3(x, z, y)] = block_data
-		
-		chunk_cache[key] = chunk_data
-		
-		
-		
-		#chunk_cache[chunks_dictionary[key]] = chunkdata
-		
-		
+	#skip past the header
+	thefile.get_32()
+	thefile.get_32()
 	
+	var chunk_data = {}
+	
+	#ChunkX = unsigned16_to_signed(thefile.get_32())
+	#ChunkY = unsigned16_to_signed(thefile.get_32())
+	
+	for x in 16:
+		for y in 16:
+			for z in 256:
+				var databyte_1 = thefile.get_8()
+				var databyte_2 = thefile.get_8()
+				var databyte_3 = thefile.get_8()
+				var databyte_4 = thefile.get_8()
+				
+				#shift bits to get the bits!
+				#this is not finished. Idk how to fix it rn.
+				var block_id = databyte_1
+				var light_value = databyte_2 << 6
+				var block_state = databyte_2 << 6
+				
+				block_data = {
+					block_id = block_id,
+					light_value = light_value,
+					block_state = block_state,
+				}
+				
+				#block_data[Vector3(x, y, z)] = thefile.get_8()
+				#chunk_data[Vector3(x, z, y)] = unsigned16_to_signed(thefile.get_32())
+				
+				#chunk_data[Vector3(key.x, z, key.y)] = block_data
+				chunk_data[Vector3(x, z, y)] = block_data
+	chunk_cache[location] = chunk_data
+	print("Finished")
 
+func free_cached_chunk(location):
+	print("Freeing cached chunk: " + str(location))
+	chunk_cache.erase(location)
 
+func cache_world():
+	
+	#iterates over the entire 65536 dictionary entries
+	cache_dictionary()	
+
+	
+	#var chunkdata = 0
+	
+	#cache each chunk
+	#for key in chunks_dictionary:
+	#	cache_chunk(key)
 
 func unsigned16_to_signed(unsigned):
 	return (unsigned + MAX_15B) % MAX_16B - MAX_15B
@@ -133,7 +132,8 @@ func load_from_fs():
 	print("File opened")
 	
 	#add file ext id code
-	cache_world()
+	cache_dictionary()
+	#cache_world()
 	get_tree().change_scene("res://Scenes/World_Viewer.tscn")
 	
 	
