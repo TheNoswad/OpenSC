@@ -1,6 +1,6 @@
 extends Node
 
-export var get_camera_node = "Camera" #Sets parent if left blank
+export var get_camera_node = "/root/Spatial/Camera" #Sets parent if left blank
 export var camera_is_self : bool #Script is on camera
 export var cull_group = "Occlusion_Culling" #Group to be culled
 export var occlusion_accuracy = 1000.0 #amount of rays

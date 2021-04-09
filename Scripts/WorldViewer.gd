@@ -55,6 +55,8 @@ func load_chunk(chunk_location):
 
 
 func _ready():
+	
+	
 	var loopcounttest = 0
 	#load_chunk(Vector2(0, 3))
 	print(Gdc.chunks_dictionary)
@@ -69,8 +71,9 @@ func _ready():
 		print(i)
 		print(loopcounttest)
 		load_chunk(i)
-		if loopcounttest == 10:
+		if loopcounttest == 1:
 			break
+			
 		
 
 
