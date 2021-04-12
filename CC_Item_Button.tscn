@@ -1,0 +1,66 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://CC_Item_Button.gd" type="Script" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+margin_right = 161.0
+margin_bottom = 14.0
+text = "Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 161.0
+margin_bottom = 32.0
+
+[node name="Type" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_right = 30.0
+margin_bottom = 14.0
+text = "Type"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Size" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 34.0
+margin_right = 60.0
+margin_bottom = 14.0
+text = "Size"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Stars" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 64.0
+margin_right = 95.0
+margin_bottom = 14.0
+text = "Stars"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExtraText" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 99.0
+margin_right = 161.0
+margin_bottom = 14.0
+text = "Extra Text"
+__meta__ = {
+"_edit_use_anchors_": false
+}
