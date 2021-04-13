@@ -3,64 +3,96 @@
 [ext_resource path="res://CC_Item_Button.gd" type="Script" id=1]
 
 [node name="Control" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -80.5
+margin_right = 80.5
+margin_bottom = 40.0
+rect_min_size = Vector2( 161, 40 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -87.5
+margin_right = 87.5
+margin_bottom = 46.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Name" type="Label" parent="VBoxContainer"]
+[node name="Button" type="Button" parent="PanelContainer"]
+visible = false
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 168.0
+margin_bottom = 39.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 168.0
+margin_bottom = 39.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="PanelContainer/VBoxContainer"]
 margin_right = 161.0
 margin_bottom = 14.0
+mouse_filter = 1
 text = "Name"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
 margin_top = 18.0
 margin_right = 161.0
 margin_bottom = 32.0
 
-[node name="Type" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Type" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 margin_right = 30.0
 margin_bottom = 14.0
+mouse_filter = 1
 text = "Type"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Size" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Size" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 margin_left = 34.0
 margin_right = 60.0
 margin_bottom = 14.0
+mouse_filter = 1
 text = "Size"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Stars" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Stars" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 margin_left = 64.0
 margin_right = 95.0
 margin_bottom = 14.0
+mouse_filter = 1
 text = "Stars"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ExtraText" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="ExtraText" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 margin_left = 99.0
 margin_right = 161.0
 margin_bottom = 14.0
+mouse_filter = 1
 text = "Extra Text"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="gui_input" from="PanelContainer" to="." method="_on_PanelContainer_gui_input"]
