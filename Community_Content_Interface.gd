@@ -1,7 +1,8 @@
 extends CanvasLayer
 
 # Declare member variables here. Examples:
-const cc_url = "https://scresdir.appspot.com/resource" # The community content URL
+#const cc_url = "https://scresdir.appspot.com/resource" # The community content URL
+const cc_url = "https://cors.bridged.cc/https://scresdir.appspot.com/resource" # The community content URL
 var items = {}
 var NextCursor = null
 var requestwait = false
@@ -26,7 +27,7 @@ func request_cc_data(Action, NextCursor):
 		
 		#var body = "Action=list&UserId=Kaalus"
 		print(body)
-		var headers = ["Content-Type: application/x-www-form-urlencoded"]
+		var headers = ["Content-Type: application/x-www-form-urlencoded", "X-Requested-With: XMLHttpRequest"]
 		
 		var error = http_request.request(cc_url, headers, false, HTTPClient.METHOD_POST, body)
 		if error != OK:
@@ -38,6 +39,8 @@ func _ready():
 func _http_request_completed(result, response_code, headers, body):
 	#var response = parse_json(body.get_string_from_utf8())
 	var response = body.get_string_from_utf8()
+	print("Response Code = " + str(response))
+	print("Headers = " + str(headers))
 	
 	var thexml = XMLParser.new()
 	var the_cc_response_dictionary = {}
