@@ -1,5 +1,5 @@
 # OpenSC
-![Discord Banner 3](https://discordapp.com/api/guilds/811691246565195826/widget.png?style=banner3)
+https://discord.gg/qDefqb8dVT
 
 Survivalcraft multitool made with the Godot engine.
 
