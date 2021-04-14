@@ -26,7 +26,7 @@ func request_cc_data(Action, NextCursor):
 			body = body + "&" + "Cursor=" + str(NextCursor)
 		
 		#var body = "Action=list&UserId=Kaalus"
-		print(body)
+		#print(body)
 		var headers = ["Content-Type: application/x-www-form-urlencoded", "X-Requested-With: XMLHttpRequest"]
 		
 		var error = http_request.request(cc_url, headers, false, HTTPClient.METHOD_POST, body)
@@ -34,12 +34,14 @@ func request_cc_data(Action, NextCursor):
 			push_error("An error occurred in the HTTP request.")
 
 func _ready():
+#	var end_detector_gen = preload("res://ListEndDetector.tscn").instance()
+#	$ScrollContainer/VBoxContainer.add_child(end_detector_gen)
 	request_cc_data("list", NextCursor)
 
 func _http_request_completed(result, response_code, headers, body):
 	#var response = parse_json(body.get_string_from_utf8())
 	var response = body.get_string_from_utf8()
-	print("Response Code = " + str(response))
+	#print("Response Code = " + str(response))
 	print("Headers = " + str(headers))
 	
 	var thexml = XMLParser.new()
@@ -72,7 +74,7 @@ func _http_request_completed(result, response_code, headers, body):
 			}
 			
 			index += 1
-		
+	
 	add_cc_items_to_list(the_cc_response_dictionary, the_cc_response_dictionary.size())
 	requestwait = false
 
@@ -94,13 +96,19 @@ func add_cc_items_to_list(cclist_dict_thingie, count_of_items):
 		
 		buttoninstance.init()
 		$ScrollContainer/VBoxContainer.add_child(buttoninstance)
+		$ScrollContainer/VBoxContainer.move_child(get_node("ScrollContainer/VBoxContainer/EndDetect"), $ScrollContainer/VBoxContainer.get_child_count())
 
 func _process(_delta):
+	pass
 #	print("Vsbr pos = " + str($ScrollContainer.get_v_scrollbar().value))
 #	print("Vsbr max = " + str($ScrollContainer.get_v_scrollbar().max_value))
 #	print("Page = " + str($ScrollContainer.get_v_scrollbar().page))
 	
-	if $ScrollContainer.get_v_scrollbar().ratio >= 0.4:
-		print("past scroll")
-		request_cc_data("list", NextCursor)
+#	if $ScrollContainer.get_v_scrollbar().ratio >= 0.4:
+#		print("past scroll")
+#		request_cc_data("list", NextCursor)
 		
+
+
+func _on_VisibilityNotifier2D_viewport_entered(viewport):
+	request_cc_data("list", NextCursor)

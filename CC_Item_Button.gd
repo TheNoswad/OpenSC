@@ -9,6 +9,8 @@ var Size = null
 var RatingsAverage = null
 var ExtraText = null
 
+var pressed = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
@@ -28,7 +30,19 @@ func init():
 
 
 func _on_PanelContainer_gui_input(event):
-	if event.is_pressed() == true:
-		print(Url)
-		OS.shell_open(Url)
+	if event is InputEventMouseMotion:
+		pressed = false
+	else:
+		if event is InputEventMouse:
+			if event.is_pressed() == true:
+				pressed = true
+			else:
+				if pressed == true:
+					pressed = false
+					print(Url)
+					OS.shell_open(Url)
+#	if event.type == InputEvent.MOUSE_BUTTON \
+#	and event.button_index == BUTTON_LEFT \
+#	and event.pressed:
+#		print("Clicked")
 
