@@ -23,15 +23,16 @@ extends FileDialog
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var blockid = 0x00
-	
-	var databyte_1 = 0x12
-	var databyte_2 = 0x40
-	var databyte_3 = 0x00
-	var databyte_4 = 0x00
-	
-	blockid = (databyte_2 >> 6) + (databyte_1)
-	print(blockid)
+	pass
+#	var blockid = 0x00
+#
+#	var databyte_1 = 0x12
+#	var databyte_2 = 0x40
+#	var databyte_3 = 0x00
+#	var databyte_4 = 0x00
+#
+#	blockid = (databyte_2 >> 6) + (databyte_1)
+#	print(blockid)
 
 
 

@@ -27,7 +27,6 @@ config/icon="res://icon.png"
 [autoload]
 
 Gdc="*res://Scripts/GDC.gd"
-VoxelFactory="*res://addons/voxel_factory/voxel_factory.gd"
 
 [display]
 

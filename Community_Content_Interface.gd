@@ -36,6 +36,7 @@ func request_cc_data(Action, NextCursor):
 func _ready():
 #	var end_detector_gen = preload("res://ListEndDetector.tscn").instance()
 #	$ScrollContainer/VBoxContainer.add_child(end_detector_gen)
+	get_tree().get_root().connect("size_changed", self, "resize_update")
 	request_cc_data("list", NextCursor)
 
 func _http_request_completed(result, response_code, headers, body):
@@ -112,3 +113,15 @@ func _process(_delta):
 
 func _on_VisibilityNotifier2D_viewport_entered(viewport):
 	request_cc_data("list", NextCursor)
+	
+
+func resize_update():
+	print("Resizing: ", get_viewport().size)
+	$ScrollContainer.rect_size(get_viewport().size.x, get_viewport().size.y)
+	if get_viewport().size.y >= get_viewport().size.x:
+		#self.columns = 1
+		pass
+	else:
+		pass
+		#self.columns = 2
+

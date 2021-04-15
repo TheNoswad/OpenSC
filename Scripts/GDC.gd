@@ -124,16 +124,87 @@ func unsigned16_to_signed(unsigned):
 	return (unsigned + MAX_15B) % MAX_16B - MAX_15B
 
 func open():
+	print("loading from fs")
 	load_from_fs()
 
 func load_from_fs():
-	var error = thefile.open(selected_file_path, File.READ_WRITE)
-	#print(error)
+	var filetype = "pak"
+	var _error = thefile.open(selected_file_path, File.READ_WRITE)
+	print(_error)
 	print("File opened")
 	
 	#add file ext id code
-	cache_dictionary()
-	#cache_world()
-	get_tree().change_scene("res://Scenes/World_Viewer.tscn")
 	
+	if filetype == "chunks32h":
+		print("Filetype detected as chunks32h")
+		cache_dictionary()
+		#cache_world()
+		get_tree().change_scene("res://Scenes/World_Viewer.tscn")
+	
+	if filetype == "pak":
+		print("Filetype detected as .pak")
+		loadpak()
+	
+func loadpak():
+	# Parses an entire Content.pak file
+	# stringlength is the length of the string. I think it's a 7 bit int, but whatever...
+	print("Loading pak file")
+	
+	var directory = {}
+	
+	thefile.seek(0)
+	
+	# Get package header
+	var packageheader = thefile.get_32()
+	
+	#Get the unknown headers past the package header
+	var num1 = thefile.get_64()
+	var num2 = thefile.get_32()
+	
+	#DEBUG
+	num2 = 1
+	#END DEBUG
+	
+	for itemscount in num2:
+		print("Position = " + str(thefile.get_position()))
+		var stringlength = 0
+		
+		var name = ""
+		var typeName = ""
+		var position = 0
+		var bytesCount = 0
+		
+		# Get the name of the item
+		stringlength = thefile.get_8()
+		name = thefile.get_buffer(stringlength)
+		print("The STRINGLENGTH = " + str(stringlength))
+		print(name.get_string_from_utf8())
+#		for length in stringlength:
+#			var thing = thefile.get_8()
+#			print(str(thing))
+#			#print("position == " + str(thefile.get_position()))
+#			name += char(thing)
+#			#print(name)
+		
+		# Get the typeName of the item
+		stringlength = thefile.get_8()
+		for length in stringlength:
+			pass
+#			name += char(thefile.get_8())
+		
+		position = thefile.get_64() + num1
+		bytesCount = thefile.get_64()
+		
+		var item = {
+			name = name,
+			typeName = typeName,
+			position = position,
+			bytesCount = bytesCount,
+		}
+		
+		directory[name] = item
+		
+		print(name)
+#		print(typeName)
+		print()
 	
