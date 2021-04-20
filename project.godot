@@ -13,9 +13,57 @@ _global_script_classes=[ {
 "class": "FreelookCamera",
 "language": "GDScript",
 "path": "res://Freecam.gd"
+}, {
+"base": "Reference",
+"class": "GPLReader",
+"language": "GDScript",
+"path": "res://addons/voxel-core/classes/readers/gpl.gd"
+}, {
+"base": "Reference",
+"class": "ImageReader",
+"language": "GDScript",
+"path": "res://addons/voxel-core/classes/readers/image.gd"
+}, {
+"base": "Reference",
+"class": "Reader",
+"language": "GDScript",
+"path": "res://addons/voxel-core/classes/reader.gd"
+}, {
+"base": "Reference",
+"class": "VoxReader",
+"language": "GDScript",
+"path": "res://addons/voxel-core/classes/readers/vox.gd"
+}, {
+"base": "Object",
+"class": "Voxel",
+"language": "GDScript",
+"path": "res://addons/voxel-core/classes/voxel.gd"
+}, {
+"base": "MeshInstance",
+"class": "VoxelMesh",
+"language": "GDScript",
+"path": "res://addons/voxel-core/classes/voxel_mesh.gd"
+}, {
+"base": "Resource",
+"class": "VoxelSet",
+"language": "GDScript",
+"path": "res://addons/voxel-core/classes/voxel_set.gd"
+}, {
+"base": "Reference",
+"class": "VoxelTool",
+"language": "GDScript",
+"path": "res://addons/voxel-core/classes/voxel_tool.gd"
 } ]
 _global_script_class_icons={
-"FreelookCamera": ""
+"FreelookCamera": "",
+"GPLReader": "",
+"ImageReader": "res://addons/voxel-core/assets/logos/MagicaVoxel.png",
+"Reader": "",
+"VoxReader": "res://addons/voxel-core/assets/logos/MagicaVoxel.png",
+"Voxel": "res://addons/voxel-core/assets/classes/voxel.png",
+"VoxelMesh": "res://addons/voxel-core/assets/classes/voxel_mesh.png",
+"VoxelSet": "res://addons/voxel-core/assets/classes/voxel_set.png",
+"VoxelTool": ""
 }
 
 [application]
@@ -35,7 +83,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray(  )
+enabled=PoolStringArray( "voxel-core" )
 
 [importer_defaults]
 

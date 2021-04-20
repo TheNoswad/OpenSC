@@ -38,11 +38,39 @@ var chunks_data_section_start = 786444
 var chunk_size = 263184
 var chunks_directory_size = 786444
 
+var voxelset = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("GDC Init")
 	
+func generate_voxel_set():
+	print("generating voxel set")
+	var voxelset = VoxelSet.new()
+	#var voxelset = load("res://examples/VoxelWorld/TiledVoxelSet.tres")
+	var blocksdata = parse_blocksdata()
+	#var material = SpatialMaterial.new()
+	
+	
+	voxelset.set_tiles(load("res://Blocks2.2.png"))
+	voxelset.set_tile_size(Vector2(16, 16))
+	
+	
+	#voxelset.set_materials()
+	#print(voxelset.get_material(1))
+	
+	for i in (blocksdata).size():
+		var voxel = {}
+		
+		Voxel.set_material(voxel, i)
+		#voxelset.set_materials(dsfsdf)
+		#voxelset.add_voxel(Voxel.)		
+		voxelset.set_voxel(i, voxel)
+		print("Voxel info added: " + str(voxel))
+	
+	#voxelset.add_voxel(Voxel.colored(Color.blue))
+	
+	Gdc.voxelset = voxelset
 func cache_dictionary():
 	var ChunkX = null
 	var ChunkY = null
@@ -55,9 +83,23 @@ func cache_dictionary():
 		offset = unsigned16_to_signed(thefile.get_32())
 		#Sets the dict name to a vector2 of ChunkX and ChunkY and the value to the chunk offset
 		chunks_dictionary[Vector2(ChunkX, ChunkY)] = offset
-		print("cached directory entry: " + str(Vector2(ChunkX, ChunkY)))
+		#print("cached directory entry: " + str(Vector2(ChunkX, ChunkY)))
 	print("Chunk Dictionary cached!")
 	
+func parse_blocksdata():
+	var thexml = XMLParser.new()
+	thexml.open("res://BlocksData.xml")
+	var blocksdata = {}
+	var blockid = 0
+	while thexml.read() == OK:
+		blockid = thexml.get_named_attribute_value("BlockId")
+		if thexml.get_node_name() == 'Block':
+			var data = {}
+			#print(thexml.get_named_attribute_value("Name"))
+			for i in thexml.get_attribute_count():
+				data[thexml.get_attribute_name(i)] = thexml.get_attribute_value(i)
+			blocksdata[blockid] = data
+	return blocksdata
 func cache_chunk(location):
 	print("caching chunk: " + str(location))
 	#goto the chunk location
@@ -113,13 +155,6 @@ func cache_world():
 	#iterates over the entire 65536 dictionary entries
 	cache_dictionary()	
 
-	
-	#var chunkdata = 0
-	
-	#cache each chunk
-	#for key in chunks_dictionary:
-	#	cache_chunk(key)
-
 func unsigned16_to_signed(unsigned):
 	return (unsigned + MAX_15B) % MAX_16B - MAX_15B
 
@@ -128,7 +163,7 @@ func open():
 	load_from_fs()
 
 func load_from_fs():
-	var filetype = "pak"
+	var filetype = "chunks32h"
 	var _error = thefile.open(selected_file_path, File.READ_WRITE)
 	print(_error)
 	print("File opened")
