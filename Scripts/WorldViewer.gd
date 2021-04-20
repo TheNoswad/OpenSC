@@ -21,7 +21,6 @@ extends GridMap
 # var b = "text"
 
 func _ready():
-	Gdc.generate_voxel_set()
 	var loopcounttest = 0
 	#load_chunk(Vector2(0, 3))
 	#print(Gdc.chunks_dictionary)
@@ -36,7 +35,7 @@ func _ready():
 		print(i)
 		print(loopcounttest)
 		load_chunk(i)
-		if loopcounttest == 10:
+		if loopcounttest == 100:
 			break	
 
 # Called when the node enters the scene tree for the first time.
@@ -74,13 +73,14 @@ func load_chunk(chunk_location):
 			
 		#set_cell_item(chunk_location_global.x + key.x, key.y, chunk_location_global.y + key.z, blockid)
 		if blockid != 0:
-			voxel_chunk.set_voxel(Vector3(key.x, key.y, key.z), 1)
+			voxel_chunk.set_voxel(Vector3(key.x, key.y, key.z), blockid)
+	
 	voxel_chunk.update_mesh()
-	voxel_chunk.translate(Vector3(chunk_location_global.x, 0, chunk_location_global.y))
+	voxel_chunk.translation.x = chunk_location_global.x/2
+	voxel_chunk.translation.z = chunk_location_global.y/2
+	#voxel_chunk.translate(Vector3(chunk_location_global.x, 0, chunk_location_global.y))
 	add_child(voxel_chunk)
 	Gdc.free_cached_chunk(chunk_location)
-	#print("loaded chunk at offset " + String(chunk_location))
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+

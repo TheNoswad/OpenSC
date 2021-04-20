@@ -38,39 +38,40 @@ var chunks_data_section_start = 786444
 var chunk_size = 263184
 var chunks_directory_size = 786444
 
-var voxelset = null
+var voxelset = load("res://2.2voxelset.tres")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("GDC Init")
 	
 func generate_voxel_set():
-	print("generating voxel set")
-	var voxelset = VoxelSet.new()
-	#var voxelset = load("res://examples/VoxelWorld/TiledVoxelSet.tres")
-	var blocksdata = parse_blocksdata()
-	#var material = SpatialMaterial.new()
-	
-	
-	voxelset.set_tiles(load("res://Blocks2.2.png"))
-	voxelset.set_tile_size(Vector2(16, 16))
-	
-	
-	#voxelset.set_materials()
-	#print(voxelset.get_material(1))
-	
-	for i in (blocksdata).size():
-		var voxel = {}
-		
-		Voxel.set_material(voxel, i)
-		#voxelset.set_materials(dsfsdf)
-		#voxelset.add_voxel(Voxel.)		
-		voxelset.set_voxel(i, voxel)
-		print("Voxel info added: " + str(voxel))
-	
-	#voxelset.add_voxel(Voxel.colored(Color.blue))
-	
-	Gdc.voxelset = voxelset
+	pass
+#	print("generating voxel set")
+#	var voxelset = VoxelSet.new()
+#	#var voxelset = load("res://examples/VoxelWorld/TiledVoxelSet.tres")
+#	var blocksdata = parse_blocksdata()
+#	#var material = SpatialMaterial.new()
+#
+#
+#	voxelset.set_tiles(load("res://Blocks2.2.png"))
+#	voxelset.set_tile_size(Vector2(16, 16))
+#
+#
+#	#voxelset.set_materials()
+#	#print(voxelset.get_material(1))
+#
+#	for i in (blocksdata).size():
+#		var voxel = {}
+#
+#		Voxel.set_material(voxel, i)
+#		#voxelset.set_materials(dsfsdf)
+#		#voxelset.add_voxel(Voxel.)		
+#		voxelset.set_voxel(i, voxel)
+#		print("Voxel info added: " + str(voxel))
+#
+#	#voxelset.add_voxel(Voxel.colored(Color.blue))
+#
+#	Gdc.voxelset = voxelset
 func cache_dictionary():
 	var ChunkX = null
 	var ChunkY = null
