@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Camera",
 "class": "FreelookCamera",
 "language": "GDScript",
-"path": "res://Freecam.gd"
+"path": "res://Scripts/Freecam.gd"
 }, {
 "base": "Reference",
 "class": "GPLReader",

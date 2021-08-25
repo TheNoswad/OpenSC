@@ -44,34 +44,6 @@ var voxelset = load("res://2.2voxelset.tres")
 func _ready():
 	print("GDC Init")
 	
-func generate_voxel_set():
-	pass
-#	print("generating voxel set")
-#	var voxelset = VoxelSet.new()
-#	#var voxelset = load("res://examples/VoxelWorld/TiledVoxelSet.tres")
-#	var blocksdata = parse_blocksdata()
-#	#var material = SpatialMaterial.new()
-#
-#
-#	voxelset.set_tiles(load("res://Blocks2.2.png"))
-#	voxelset.set_tile_size(Vector2(16, 16))
-#
-#
-#	#voxelset.set_materials()
-#	#print(voxelset.get_material(1))
-#
-#	for i in (blocksdata).size():
-#		var voxel = {}
-#
-#		Voxel.set_material(voxel, i)
-#		#voxelset.set_materials(dsfsdf)
-#		#voxelset.add_voxel(Voxel.)		
-#		voxelset.set_voxel(i, voxel)
-#		print("Voxel info added: " + str(voxel))
-#
-#	#voxelset.add_voxel(Voxel.colored(Color.blue))
-#
-#	Gdc.voxelset = voxelset
 func cache_dictionary():
 	var ChunkX = null
 	var ChunkY = null
@@ -144,7 +116,9 @@ func cache_chunk(location):
 				
 				#chunk_data[Vector3(key.x, z, key.y)] = block_data
 				chunk_data[Vector3(x, z, y)] = block_data
+				#id_array.append(databyte_1)
 	chunk_cache[location] = chunk_data
+	#chunk_cache[location] = id_array
 	print("Finished")
 
 func free_cached_chunk(location):

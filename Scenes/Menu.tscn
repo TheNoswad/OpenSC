@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://FileDialog.gd" type="Script" id=1]
-[ext_resource path="res://StartButton.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/FileDialog.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/StartButton.gd" type="Script" id=2]
 [ext_resource path="res://Fonts/Pericles/Button_Font.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Scenes/CC_Launch_Button.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/CC_Launch_Button.gd" type="Script" id=4]
 [ext_resource path="res://Fonts/Pericles/Big.tres" type="DynamicFont" id=5]
-[ext_resource path="res://Scenes/Menu-GridContainer.gd" type="Script" id=6]
+[ext_resource path="res://Scripts/Menu-GridContainer.gd" type="Script" id=6]
 
 [node name="Control" type="Control"]
 anchor_left = 0.5
@@ -119,6 +119,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
 text = "Settings"
+
 [connection signal="file_selected" from="FileDialog" to="FileDialog" method="_on_FileDialog_file_selected"]
 [connection signal="button_down" from="VBoxContainer/HBoxContainer/MarginContainer/GridContainer/Button" to="FileDialog" method="_on_Button_button_down"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/MarginContainer/GridContainer/Button2" to="VBoxContainer/HBoxContainer/MarginContainer/GridContainer/Button2" method="_on_Button2_pressed"]

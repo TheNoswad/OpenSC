@@ -1,35 +1,26 @@
-[gd_resource type="MeshLibrary" load_steps=19 format=2]
+[gd_resource type="MeshLibrary" load_steps=14 format=2]
 
 [ext_resource path="res://Blocks/Bedrock.tres" type="CubeMesh" id=1]
-[ext_resource path="res://textures/Dirt.png" type="Texture" id=2]
-[ext_resource path="res://textures/Cobblestone.png" type="Texture" id=3]
-[ext_resource path="res://textures/Granite.png" type="Texture" id=4]
-[ext_resource path="res://textures/Sandstone.png" type="Texture" id=5]
-[ext_resource path="res://textures/Sand.png" type="Texture" id=6]
 
 [sub_resource type="SpatialMaterial" id=1]
-albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 3, 2, 1 )
 
 [sub_resource type="CubeMesh" id=2]
 material = SubResource( 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
-albedo_texture = ExtResource( 4 )
 uv1_scale = Vector3( 3, 2, 1 )
 
 [sub_resource type="CubeMesh" id=4]
 material = SubResource( 3 )
 
 [sub_resource type="SpatialMaterial" id=5]
-albedo_texture = ExtResource( 5 )
 uv1_scale = Vector3( 3, 2, 1 )
 
 [sub_resource type="CubeMesh" id=6]
 material = SubResource( 5 )
 
 [sub_resource type="SpatialMaterial" id=7]
-albedo_texture = ExtResource( 3 )
 uv1_scale = Vector3( 3, 2, 1 )
 
 [sub_resource type="CubeMesh" id=8]
@@ -38,7 +29,6 @@ material = SubResource( 7 )
 [sub_resource type="CubeMesh" id=9]
 
 [sub_resource type="SpatialMaterial" id=10]
-albedo_texture = ExtResource( 6 )
 uv1_scale = Vector3( 3, 2, 1 )
 
 [sub_resource type="CubeMesh" id=11]

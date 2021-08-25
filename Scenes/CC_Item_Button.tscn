@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://CC_Item_Button.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/CC_Item_Button.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/Pericles/Button_Font.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Fonts/Pericles/CC-item-small.tres" type="DynamicFont" id=3]
 

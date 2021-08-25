@@ -86,7 +86,7 @@ func add_cc_items_to_list(cclist_dict_thingie, count_of_items):
 #		button1.show()
 #		items[i] = button1
 		
-		var buttoninstance = preload("res://CC_Item_Button.tscn").instance()
+		var buttoninstance = preload("res://Scenes/CC_Item_Button.tscn").instance()
 		
 		buttoninstance.Name = cclist_dict_thingie[i]["Name"]
 		buttoninstance.Url = cclist_dict_thingie[i]["Url"]
