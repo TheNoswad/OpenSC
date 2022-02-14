@@ -1,7 +1,0 @@
-[gd_resource type="CubeMesh" load_steps=2 format=2]
-
-[sub_resource type="SpatialMaterial" id=1]
-uv1_scale = Vector3( 3, 2, 1 )
-
-[resource]
-material = SubResource( 1 )
