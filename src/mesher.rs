@@ -1,11 +1,11 @@
 use glam::{Vec3, vec2, Vec2};
 use rend3::types::{Mesh, MeshBuilder};
 
-use crate::chunks32h::Chunk;
+use crate::{chunks32h::Chunk, blocksdata::BlocksData};
 
 const TEXTURE_ATLAS_SIZE: u8 = 16;
 
-pub fn generate_chunk_mesh(chunk: &Chunk) -> Mesh {
+pub fn generate_chunk_mesh(chunk: &Chunk, blocksdata: &Vec<BlocksData>) -> Mesh {
     let mut vertices: Vec<Vec3> = vec![];
     let mut indices: Vec<u32> = vec![];
     let mut uvs: Vec<Vec2> = vec![];

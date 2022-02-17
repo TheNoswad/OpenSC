@@ -1,4 +1,5 @@
 use binrw::BinReaderExt;
+use blocksdata::BlocksData;
 use chunks32h::{ChunksFile, Directory, Chunk};
 use glam::{DVec2, Mat3A, Mat4, UVec2, Vec3, Vec3A};
 use image::GenericImageView;
@@ -23,6 +24,7 @@ use winit::{
 };
 
 //mod chunks32fs;
+mod blocksdata;
 mod mesher;
 pub mod chunks32h;
 mod platform;
@@ -288,6 +290,8 @@ struct SceneViewer {
 
     chunksfile: ChunksFile,
     filehandle: std::fs::File,
+    
+    blocksdata: Vec<BlocksData>,
 
     texture_pack_handle: Option<ResourceHandle<MaterialTag>>,
 
@@ -381,7 +385,7 @@ impl SceneViewer {
 
         chunksfile.directory = directory;
 
-        
+        let blocksdata = blocksdata::load_blockdata();
 
         Self {
             absolute_mouse,
@@ -402,6 +406,8 @@ impl SceneViewer {
 
             chunksfile,
             filehandle: file,
+
+            blocksdata: blocksdata,
 
             texture_pack_handle: None,
 
@@ -485,7 +491,7 @@ impl rend3_framework::App for SceneViewer {
         //file.seek(SeekFrom::Start(786444 + (0 as u64 * 132112))).unwrap();
         //let chunk: Chunk = file.read_ne().unwrap();
 
-        let mesh = mesher::generate_chunk_mesh(&chunk);
+        let mesh = mesher::generate_chunk_mesh(&chunk, &self.blocksdata);
 
         let mesh_handle = renderer.add_mesh(mesh);
 

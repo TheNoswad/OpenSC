@@ -1,13 +1,10 @@
-use std::error::Error;
-use std::io;
-use std::process;
-
 use serde::Deserialize;
 
 // By default, struct field names are deserialized based on the position of
 // a corresponding field in the CSV data's header record.
 #[derive(Debug, Deserialize)]
-struct BlocksData {
+#[allow(dead_code, non_snake_case)]
+pub struct BlocksData {
     //#[serde(rename = "Class Name")]
     ClassName: Option<String>,
     DefaultDisplayName: Option<String>,
@@ -89,7 +86,8 @@ struct BlocksData {
     DefaultDescription: Option<String>,
 }
 
-fn example() -> Result<(), Box<dyn Error>> {
+/// Parse the blocksdata into a vec
+pub fn load_blockdata() -> Vec<BlocksData> {
     let mut blocksdata: Vec<BlocksData> = vec![];
     let mut rdr = csv::ReaderBuilder::new()
         //.flexible(true)
@@ -102,24 +100,12 @@ fn example() -> Result<(), Box<dyn Error>> {
         match result {
             Ok(unwrappedresult) => {
                 let record: BlocksData = unwrappedresult;
-                //println!("{:?}", record);
-                //dbg!(record);
-                //dbg!(record);
                 blocksdata.push(record);
             },
             Err(err) => {
                 println!("error {}", err)
             },
         }
-        //let record: Record = result?;
-        //println!("{:?}", record);
     }
-    Ok(())
-}
-
-fn main() {
-    if let Err(err) = example() {
-        println!("error running example: {}", err);
-        process::exit(1);
-    }
+    return blocksdata
 }
