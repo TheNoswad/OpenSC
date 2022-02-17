@@ -1,12 +1,13 @@
 use binrw::BinReaderExt;
 use chunks32h::{ChunksFile, Directory, Chunk};
 use glam::{DVec2, Mat3A, Mat4, UVec2, Vec3, Vec3A};
+use image::GenericImageView;
 use instant::Instant;
 use pico_args::Arguments;
 use rend3::{
     types::{
         Backend, Camera, CameraProjection, DirectionalLight, DirectionalLightHandle, SampleCount, Texture,
-        TextureFormat,
+        TextureFormat, ResourceHandle, MaterialTag,
     },
     util::typedefs::FastHashMap,
     Renderer, RendererProfile,
@@ -21,6 +22,7 @@ use winit::{
     window::{Fullscreen, WindowBuilder},
 };
 
+//mod chunks32fs;
 mod mesher;
 pub mod chunks32h;
 mod platform;
@@ -208,6 +210,38 @@ where
     });
 }
 
+fn init_texture_pack(renderer: &Arc<Renderer>) -> ResourceHandle<MaterialTag> {
+    // Add texture to renderer's world.
+    let texturepack_raw = image::load_from_memory(include_bytes!("blocks.png"))
+        .expect("Failed to load image from memory");
+
+    let texturepack_rgba8 = texturepack_raw.to_rgba8();
+
+    let texture_pack = rend3::types::Texture {
+        label: Option::None,
+        data: texturepack_rgba8.to_vec(),
+        format: rend3::types::TextureFormat::Rgba8UnormSrgb,
+        size: glam::UVec2::new(
+            texturepack_raw.dimensions().0,
+            texturepack_raw.dimensions().1,
+        ),
+        mip_count: rend3::types::MipmapCount::ONE,
+        mip_source: rend3::types::MipmapSource::Uploaded,
+    };
+    let texture_pack_handle = renderer.add_texture_2d(texture_pack);
+    dbg!(texturepack_raw.dimensions());
+
+    let material = rend3_routine::pbr::PbrMaterial {
+        albedo: rend3_routine::pbr::AlbedoComponent::Texture(texture_pack_handle),
+        unlit: false,
+        sample_type: rend3_routine::pbr::SampleType::Nearest,
+        ..rend3_routine::pbr::PbrMaterial::default()
+    };
+    let material_handle = renderer.add_material(material);
+
+    return material_handle;
+}
+
 const HELP: &str = "\
 scene-viewer
 gltf and glb scene viewer powered by the rend3 rendering library.
@@ -254,6 +288,10 @@ struct SceneViewer {
 
     chunksfile: ChunksFile,
     filehandle: std::fs::File,
+
+    texture_pack_handle: Option<ResourceHandle<MaterialTag>>,
+
+    object_handle: Option<rend3::types::ObjectHandle>,
 
     scancode_status: FastHashMap<u32, bool>,
     camera_pitch: f32,
@@ -365,6 +403,10 @@ impl SceneViewer {
             chunksfile,
             filehandle: file,
 
+            texture_pack_handle: None,
+
+            object_handle: None,
+
             scancode_status: FastHashMap::default(),
             camera_pitch: -std::f32::consts::FRAC_PI_8,
             camera_yaw: std::f32::consts::FRAC_PI_4,
@@ -430,12 +472,38 @@ impl rend3_framework::App for SceneViewer {
             }));
         }
 
+        self.texture_pack_handle = Some(init_texture_pack(&renderer));
+
         let gltf_settings = self.gltf_settings;
         let file_to_load = self.file_to_load.take();
         let renderer = Arc::clone(renderer);
         let routines = Arc::clone(routines);
 
+        //let file = self.chunksfile;
+        println!("Add mesh");
+        let chunk = ChunksFile::read_chunk(&mut self.filehandle, 0);
+        //file.seek(SeekFrom::Start(786444 + (0 as u64 * 132112))).unwrap();
+        //let chunk: Chunk = file.read_ne().unwrap();
 
+        let mesh = mesher::generate_chunk_mesh(&chunk);
+
+        let mesh_handle = renderer.add_mesh(mesh);
+
+        // Add PBR material with all defaults except a single color.
+        let material = rend3_routine::pbr::PbrMaterial {
+            albedo: rend3_routine::pbr::AlbedoComponent::Value(glam::Vec4::new(0.0, 0.5, 0.5, 1.0)),
+            ..rend3_routine::pbr::PbrMaterial::default()
+        };
+        //let material_handle = renderer.add_material(material);
+        let material_handle = &self.texture_pack_handle;
+
+        let object = rend3::types::Object {
+            mesh_kind: rend3::types::ObjectMeshKind::Static(mesh_handle),
+            material: self.texture_pack_handle.as_ref().unwrap().clone(),
+            transform: glam::Mat4::IDENTITY,
+        };
+
+        self.object_handle = Some(renderer.add_object(object));
     }
 
     fn handle_event(
@@ -528,13 +596,7 @@ impl rend3_framework::App for SceneViewer {
 
                 // Manage chunks here!
 
-                let file = self.chunksfile;
-                file.seek(SeekFrom::Start(786444 + (0 as u64 * 132112))).unwrap();
-                let chunk: Chunk = file.read_ne().unwrap();
-        
-                let mesh = mesher::generate_chunk_mesh(&chunk);
-        
-                renderer.add_mesh(mesh);
+                
 
 
 

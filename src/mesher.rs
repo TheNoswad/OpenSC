@@ -8,24 +8,33 @@ const TEXTURE_ATLAS_SIZE: u8 = 16;
 pub fn generate_chunk_mesh(chunk: &Chunk) -> Mesh {
     let mut vertices: Vec<Vec3> = vec![];
     let mut indices: Vec<u32> = vec![];
+    let mut uvs: Vec<Vec2> = vec![];
 
     let mut count = 0;
     let mut indices_count = 0;
 
-    for z in 0..15 {
-        for x in 0..15 {
-            for y in 0..255 {
-                let block = chunk.blocks[count].blockdata;
+    for z in 0..16 {
+        for x in 0..16 {
+            for y in 0..256 {
+                let block = chunk.blocks[count].blocktype();
+                println!("blocktype {} {} {} {}", x, y, z, block);
                 if block != 0 {
                     let face_occulsion = compute_face_oculsion(chunk, x, y, z);
-                    let block_mesh = generate_block_mesh(x, y, z, block, indices_count, face_occulsion);
+                    let mut block_mesh = generate_block_mesh(x, y, z, block, indices_count, face_occulsion);
+
+                    vertices.append(&mut block_mesh.0);
+                    indices.append(&mut block_mesh.1);
+                    uvs.append(&mut block_mesh.2);
+
+                    indices_count = block_mesh.3
                 }
                 count += 1;
             }
         }
     }
-    let mesh = MeshBuilder::new(vertices, rend3::types::Handedness::Left)
+    let mesh = MeshBuilder::new(vertices, rend3::types::Handedness::Right)
         .with_indices(indices)
+        .with_vertex_uv0(uvs)
         .build()
         .unwrap();
     return mesh
@@ -34,7 +43,7 @@ pub fn generate_chunk_mesh(chunk: &Chunk) -> Mesh {
 /// Computes faces with adjacent blocks to ignore meshing
 fn compute_face_oculsion(
     chunk: &Chunk,
-    x: u8, y: u8, z: u8,
+    x: u16, y: u16, z: u16,
     //top_chunk: Option<&world::Chunk>,
     //bottom_chunk: Option<&world::Chunk>,
     //left_chunk: Option<&world::Chunk>,
@@ -72,7 +81,7 @@ fn compute_face_oculsion(
         },
 
         // If the x axis is at the far right (7)
-        7 => {
+        15 => {
             // match right_chunk {
             //     // Check if the right chunk exists
             //     Some(unwrapped) => {
@@ -125,7 +134,7 @@ fn compute_face_oculsion(
             }
         },
 
-        7 => {
+        255 => {
             // match top_chunk {
             //     Some(unwrapped) => {
             //         match unwrapped.get_block(x.into(), 0.0, z.into()).id {
@@ -174,7 +183,7 @@ fn compute_face_oculsion(
                 _ => back = true
             }
         },
-        7 => {
+        15 => {
             //back = false;
             // match back_chunk {
             //     Some(unwrapped) => {
@@ -209,7 +218,7 @@ fn compute_face_oculsion(
 }
 
 /// Generate a mesh for a single block
-pub fn generate_block_mesh (x: u8, y: u8, z: u8, block: u32, indices_count: u32, face_occulsion: [bool; 6]) -> (Vec<Vec3>, Vec<u32>, Vec<Vec2>, u32) {
+pub fn generate_block_mesh (x: u16, y: u16, z: u16, block: u16, indices_count: u32, face_occulsion: [bool; 6]) -> (Vec<Vec3>, Vec<u32>, Vec<Vec2>, u32) {
     // Stores the coordinate values of the block as a f32
     let x_as_float = x as f32;
     let y_as_float = y as f32;
