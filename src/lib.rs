@@ -1,6 +1,6 @@
 use binrw::BinReaderExt;
 use blocksdata::BlocksData;
-use chunks32h::{ChunksFile, Directory, Chunk};
+use chunks32h::{ChunksFile, Directory};
 use glam::{DVec2, Mat3A, Mat4, UVec2, Vec3, Vec3A};
 use image::GenericImageView;
 use instant::Instant;
@@ -16,7 +16,7 @@ use rend3::{
 use rend3_framework::{lock, AssetPath, Mutex};
 use rend3_gltf::GltfSceneInstance;
 use rend3_routine::{base::BaseRenderGraph, pbr::NormalTextureYDirection, skybox::SkyboxRoutine};
-use std::{collections::HashMap, future::Future, hash::BuildHasher, path::Path, sync::Arc, time::Duration, fs::File, io::{Seek, SeekFrom}};
+use std::{collections::HashMap, future::Future, hash::BuildHasher, path::Path, sync::Arc, time::Duration, fs::File};
 use wgpu_profiler::GpuTimerScopeResult;
 use winit::{
     event::{DeviceEvent, ElementState, Event, KeyboardInput, MouseButton, WindowEvent},
@@ -29,7 +29,7 @@ mod mesher;
 pub mod chunks32h;
 mod platform;
 
-async fn load_skybox_image(loader: &rend3_framework::AssetLoader, data: &mut Vec<u8>, path: &str) {
+async fn _load_skybox_image(loader: &rend3_framework::AssetLoader, data: &mut Vec<u8>, path: &str) {
     let decoded = image::load_from_memory(
         &loader
             .get_asset(AssetPath::Internal(path))
@@ -42,18 +42,18 @@ async fn load_skybox_image(loader: &rend3_framework::AssetLoader, data: &mut Vec
     data.extend_from_slice(decoded.as_raw());
 }
 
-async fn load_skybox(
+async fn _load_skybox(
     renderer: &Renderer,
     loader: &rend3_framework::AssetLoader,
     skybox_routine: &Mutex<SkyboxRoutine>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut data = Vec::new();
-    load_skybox_image(loader, &mut data, "skybox/right.jpg").await;
-    load_skybox_image(loader, &mut data, "skybox/left.jpg").await;
-    load_skybox_image(loader, &mut data, "skybox/top.jpg").await;
-    load_skybox_image(loader, &mut data, "skybox/bottom.jpg").await;
-    load_skybox_image(loader, &mut data, "skybox/front.jpg").await;
-    load_skybox_image(loader, &mut data, "skybox/back.jpg").await;
+    _load_skybox_image(loader, &mut data, "skybox/right.jpg").await;
+    _load_skybox_image(loader, &mut data, "skybox/left.jpg").await;
+    _load_skybox_image(loader, &mut data, "skybox/top.jpg").await;
+    _load_skybox_image(loader, &mut data, "skybox/bottom.jpg").await;
+    _load_skybox_image(loader, &mut data, "skybox/front.jpg").await;
+    _load_skybox_image(loader, &mut data, "skybox/back.jpg").await;
 
     let handle = renderer.add_texture_cube(Texture {
         format: TextureFormat::Rgba8UnormSrgb,
@@ -67,7 +67,7 @@ async fn load_skybox(
     Ok(())
 }
 
-async fn load_gltf(
+async fn _load_gltf(
     renderer: &Renderer,
     loader: &rend3_framework::AssetLoader,
     settings: &rend3_gltf::GltfLoadSettings,
@@ -379,7 +379,7 @@ impl SceneViewer {
 
         let mut file = File::open("Chunks32h.dat").unwrap();
 
-        let mut directory: Directory = file.read_ne().unwrap();
+        let directory: Directory = file.read_ne().unwrap();
 
         let mut chunksfile = ChunksFile::new();
 
@@ -480,10 +480,10 @@ impl rend3_framework::App for SceneViewer {
 
         self.texture_pack_handle = Some(init_texture_pack(&renderer));
 
-        let gltf_settings = self.gltf_settings;
-        let file_to_load = self.file_to_load.take();
+        let _gltf_settings = self.gltf_settings;
+        let _file_to_load = self.file_to_load.take();
         let renderer = Arc::clone(renderer);
-        let routines = Arc::clone(routines);
+        let _routines = Arc::clone(routines);
 
         //let file = self.chunksfile;
         println!("Add mesh");
@@ -494,14 +494,6 @@ impl rend3_framework::App for SceneViewer {
         let mesh = mesher::generate_chunk_mesh(&chunk, &self.blocksdata);
 
         let mesh_handle = renderer.add_mesh(mesh);
-
-        // Add PBR material with all defaults except a single color.
-        let material = rend3_routine::pbr::PbrMaterial {
-            albedo: rend3_routine::pbr::AlbedoComponent::Value(glam::Vec4::new(0.0, 0.5, 0.5, 1.0)),
-            ..rend3_routine::pbr::PbrMaterial::default()
-        };
-        //let material_handle = renderer.add_material(material);
-        let material_handle = &self.texture_pack_handle;
 
         let object = rend3::types::Object {
             mesh_kind: rend3::types::ObjectMeshKind::Static(mesh_handle),

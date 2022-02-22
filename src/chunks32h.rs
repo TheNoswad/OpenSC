@@ -2,8 +2,6 @@ use std::{fs::File, io::{Seek, SeekFrom}};
 
 use binrw::{binrw, BinReaderExt};
 use modular_bitfield::{bitfield, prelude::{B10, B4, B18}};
-use ux::{i10, i4}; // #[binrw] attribute
-
 
 #[binrw]
 #[derive(Debug)]

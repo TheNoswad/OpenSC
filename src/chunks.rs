@@ -1,10 +1,9 @@
-use binrw::{binrw, ReadOptions, Endian}; // #[binrw] attribute
-use binrw::{BinReaderExt, BinWrite, io::Cursor}; // reading/writing utilities
+use binrw::{BinReaderExt}; // reading/writing utilities
 use std::fs::File;
 use std::io::{Seek, SeekFrom};
 use opensc::chunks32h::*;
 
-const FIRST_CHUNK_LOCATION: u32 = 786444;
+const _FIRST_CHUNK_LOCATION: u32 = 786444;
 
 //#[derive(BinRead)]
 // #[binrw]

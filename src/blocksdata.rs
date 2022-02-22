@@ -1,5 +1,4 @@
 use serde::Deserialize;
-use serde_tuple::Deserialize_tuple;
 
 // By default, struct field names are deserialized based on the position of
 // a corresponding field in the CSV data's header record.
@@ -88,7 +87,7 @@ pub struct BlocksDataCSV {
 }
 
 /// Parse the blocksdata into a vec
-pub fn load_blockdata_csv() -> Vec<BlocksDataCSV> {
+pub fn _load_blockdata_csv() -> Vec<BlocksDataCSV> {
     let mut blocksdata: Vec<BlocksDataCSV> = vec![];
     let mut rdr = csv::ReaderBuilder::new()
         //.flexible(true)
@@ -126,12 +125,14 @@ pub fn load_blockdata_csv() -> Vec<BlocksDataCSV> {
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(non_snake_case)]
 pub struct BlocksData {
     #[serde(rename = "Block")]
     pub Blocks: Vec<Block>
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code, non_snake_case)]
 pub struct Block {
     pub BlockId: u8,
     pub Name: String,
@@ -151,12 +152,6 @@ pub struct Block {
     pub AverageToolLongevity: i32
 }
 
-#[derive(Debug, Deserialize)]
-pub struct TextureLocation {
-    x: u8,
-    y: u8
-}
-
 pub fn load_blocksdata_xml() -> BlocksData {
     let blocksdataxml = include_str!("BlocksData.xml");
     let doc: BlocksData = quick_xml::de::from_str(blocksdataxml).unwrap();
@@ -172,31 +167,7 @@ where
     let ret: Vec<f32> = str_sequence.split(",").map(|s| s.trim().parse::<f32>().unwrap()).collect::<Vec<_>>();
     dbg!(&ret);
 
-    // let ret: (&str, &str) = 
-    //     str_sequence.split_once(',').unwrap();
-
-    //let thing: Vec<u32> = str_sequence.split(',').chars().filter_map(|a| a.to_digit(10)).collect();
-    // wtf have i created
-    //let thing: Vec<u32> = str_sequence.chars().filter_map(|a| a.to_digit(10)).collect();
-
-    // let numbers: Vec<i32> = 
-    // str_sequence
-    //       .lines().next().unwrap()
-    //       .trim().split(',')
-    //       .map(|s| s.strip_prefix(" ").unwrap().parse().unwrap())
-    //       .collect();
-
-    // dbg!(&numbers);
-    // let mut vec: Vec<u8> = vec![];
-    // for i in thing {
-    //     vec.push(i)
-    //     //vec.push(i.parse::<u8>().unwrap())
-    // }
     Ok(
         ret
     )
-    // Ok(str_sequence
-    //     .split(',')
-    //     .map(|item| item.to_owned())
-    //     .collect())
 }

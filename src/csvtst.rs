@@ -1,5 +1,4 @@
 use std::error::Error;
-use std::io;
 use std::process;
 
 use serde::Deserialize;
@@ -7,6 +6,7 @@ use serde::Deserialize;
 // By default, struct field names are deserialized based on the position of
 // a corresponding field in the CSV data's header record.
 #[derive(Debug, Deserialize)]
+#[allow(dead_code, non_snake_case)]
 struct BlocksData {
     //#[serde(rename = "Class Name")]
     ClassName: Option<String>,
