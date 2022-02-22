@@ -291,7 +291,7 @@ struct SceneViewer {
     chunksfile: ChunksFile,
     filehandle: std::fs::File,
     
-    blocksdata: Vec<BlocksData>,
+    blocksdata: BlocksData,
 
     texture_pack_handle: Option<ResourceHandle<MaterialTag>>,
 
@@ -385,7 +385,7 @@ impl SceneViewer {
 
         chunksfile.directory = directory;
 
-        let blocksdata = blocksdata::load_blockdata();
+        let blocksdata = blocksdata::load_blocksdata_xml();
 
         Self {
             absolute_mouse,

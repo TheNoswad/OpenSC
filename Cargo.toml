@@ -17,6 +17,10 @@ path = "src/chunks.rs"
 name = "csv"
 path = "src/csvtst.rs"
 
+[[example]]
+name = "xml"
+path = "src/xmltst.rs"
+
 
 [features]
 tracy = ["profiling/profile-with-tracy", "tracy-client"]
@@ -50,6 +54,8 @@ deflate = "*"
 modular-bitfield = "*"
 csv = "*"
 serde = { version = "1.0", features = ["derive"] }
+quick-xml = { version = "*", features = ["serialize"] }
+serde_tuple = "*"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen-futures = "0.4"
