@@ -4,4 +4,6 @@ mod app;
 pub use app::TemplateApp;
 
 mod world;
+mod furniture;
+mod rendering;
 mod xmltreewidget;

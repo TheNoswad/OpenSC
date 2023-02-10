@@ -11,6 +11,7 @@ egui = "0.20.0"
 egui_extras = "*"
 rfd = "*" # Rust file dialogue
 xmltree = "*" # Tree XML crate
+unicode-bom = "*"
 eframe = { version = "0.20.0", default-features = false, features = [
     "accesskit",     # Make egui comptaible with screen readers. NOTE: adds a lot of dependencies.
     "default_fonts", # Embed the default egui fonts.
