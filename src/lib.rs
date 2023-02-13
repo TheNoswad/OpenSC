@@ -7,3 +7,4 @@ mod world;
 mod furniture;
 mod rendering;
 mod xmltreewidget;
+mod voxel_mesher;

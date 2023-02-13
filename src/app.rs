@@ -4,7 +4,7 @@ use eframe::{glow, egui_glow};
 use egui::DragValue;
 use xmltree::Element;
 
-use crate::{world::World, furniture::FurnitureDesigns, rendering::{self, set_uniform, create_vertex_buffer}};
+use crate::{world::World, furniture::FurnitureDesigns, rendering::{self, set_uniform, create_vertex_buffer, create_index_buffer}};
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 //#[derive(serde::Deserialize, serde::Serialize)]
@@ -110,7 +110,7 @@ impl eframe::App for TemplateApp {
     /// Called each time the UI needs repainting, which may be many times per second.
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        let Self { label, value, dropped_files , ..} = self;
+        let Self { label, value, dropped_files, picked_path, element, world, rendering, angle, .. } = self;
 
         // Examples of how to create different panels and windows.
         // Pick whichever suits you.
@@ -189,6 +189,13 @@ impl eframe::App for TemplateApp {
                 *value += 1.0;
             }
 
+            if ui.button("Update Mesh").clicked() {
+                let mesh = self.furnituredsg.as_ref().unwrap().values[1].get_mesh();
+                //dbg!(&mesh);
+                rendering.lock().unwrap().mesh = mesh;
+                rendering.lock().unwrap().update = true;
+            }
+
 
 
             ui.with_layout(egui::Layout::bottom_up(egui::Align::LEFT), |ui| {
@@ -234,6 +241,12 @@ impl eframe::App for TemplateApp {
                 ui.label("You can turn on resizing and scrolling if you like.");
                 ui.label("You would normally choose either panels OR windows.");
             });
+        }
+    }
+
+    fn on_exit(&mut self, gl: Option<&glow::Context>) {
+        if let Some(gl) = gl {
+            self.rendering.lock().unwrap().destroy(gl);
         }
     }
 }
@@ -305,9 +318,19 @@ enum FileType {
 }
 
 struct FurnitureRender {
+    // Shader program
     program: glow::Program,
+    // Mesh to render
+    mesh: rendering::Mesh,
+    // Vertex buffer
     vbo: glow::Buffer,
-    vao: glow::VertexArray
+    // Vertex array. Describes the layout of the vertex buffer
+    vao: glow::VertexArray,
+    // Index buffer
+    ibo: glow::Buffer,
+
+    // If the mesh needs to be updated
+    update: bool,
 }
 
 impl FurnitureRender {
@@ -329,10 +352,13 @@ impl FurnitureRender {
             // Create a vertex buffer and vertex array object
             let (vbo, vao) = create_vertex_buffer(&gl);
 
+            let ibo = create_index_buffer(&gl);
+
             // Upload some uniforms
             set_uniform(&gl, program, "blue", 0.8);
 
             gl.clear_color(0.1, 0.2, 0.3, 1.0);
+
             
             // let vertex_array = gl
             //     .create_vertex_array()
@@ -340,8 +366,11 @@ impl FurnitureRender {
 
             Self {
                 program,
+                mesh: rendering::Mesh::empty(),
                 vbo,
-                vao
+                vao,
+                ibo,
+                update: false
             }
         }
     }
@@ -355,13 +384,33 @@ impl FurnitureRender {
         }
     }
 
-    fn paint(&self, gl: &glow::Context, angle: f32) {
+    fn paint(&mut self, gl: &glow::Context, angle: f32) {
         use glow::HasContext as _;
+
+        if self.update {
+            self.update = false;
+            self.update_mesh(gl);
+        }
+
         unsafe {
             //gl.clear(glow::COLOR_BUFFER_BIT);
+
+            // Use the program
             gl.use_program(Some(self.program));
+
+            // Bind the vertex array
             gl.bind_vertex_array(Some(self.vao));
-            gl.draw_arrays(glow::TRIANGLE_STRIP, 0, 3);
+
+            // Bind the index buffer
+            gl.bind_buffer(glow::ELEMENT_ARRAY_BUFFER, Some(self.ibo));
+
+            // Draw the mesh
+            gl.draw_elements(glow::TRIANGLES, 3, glow::UNSIGNED_INT, 0);
+
+
+            //gl.draw_arrays(glow::TRIANGLE_STRIP, 0, 3);
+
+
             // gl.use_program(Some(self.program));
             // gl.uniform_1_f32(
             //     gl.get_uniform_location(self.program, "u_angle").as_ref(),
@@ -369,6 +418,37 @@ impl FurnitureRender {
             // );
             // gl.bind_vertex_array(Some(self.vertex_array));
             // gl.draw_arrays(glow::TRIANGLES, 0, 3);
+        }
+    }
+
+    fn update_mesh(&mut self, gl: &glow::Context) {
+        println!("Updating mesh");
+        use glow::HasContext as _;
+        
+        //dbg!(&self.mesh);
+        unsafe {
+            // Bind the vertex array
+            gl.bind_vertex_array(Some(self.vao));
+
+            // Bind the vertex buffer
+            gl.bind_buffer(glow::ARRAY_BUFFER, Some(self.vbo));
+
+            // Upload the vertex data
+            gl.buffer_data_u8_slice(
+                glow::ARRAY_BUFFER,
+                &self.mesh.get_vertices_slice(),
+                glow::STATIC_DRAW,
+            );
+
+            // Bind the index buffer
+            gl.bind_buffer(glow::ELEMENT_ARRAY_BUFFER, Some(self.ibo));
+
+            // Upload the index data
+            gl.buffer_data_u8_slice(
+                glow::ELEMENT_ARRAY_BUFFER,
+                &self.mesh.get_indices_slice(),
+                glow::STATIC_DRAW,
+            );
         }
     }
 }

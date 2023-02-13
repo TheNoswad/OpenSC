@@ -3,6 +3,8 @@ use std::{path::PathBuf, io::Read, fs::File};
 use unicode_bom::Bom;
 use xmltree::Element;
 
+use crate::voxel_mesher;
+
 pub struct FurnitureDesigns {
     pub values: Vec<FurnitureDesign>,
     xml: Option<Element>
@@ -45,11 +47,13 @@ impl FurnitureDesigns {
         for child in &self.xml.as_ref().unwrap().children {
             //dbg!(child);
             let index = child.as_element().unwrap().attributes.get("Name").unwrap().parse::<usize>().unwrap();
-            dbg!(&child.as_element().unwrap().name);
+            //dbg!(&child.as_element().unwrap().name);
 
             self.values.push(FurnitureDesign::parse(&child.as_element().unwrap()));
 
         }
+        //dbg!(&self.values[0].values_expanded);
+
     }
 
 
@@ -78,12 +82,14 @@ impl FurnitureDesigns {
 
 #[derive(Debug)]
 pub struct FurnitureDesign {
-    name: String,
-    terrainusecount: u32,
-    resolution: u32,
-    interactionmode: FurnitureInteractionMode,
-    linkeddesign: Option<u32>,
-    values: Vec<RleEntry>
+    pub name: String,
+    pub terrainusecount: u32,
+    pub resolution: u32,
+    pub interactionmode: FurnitureInteractionMode,
+    pub linkeddesign: Option<u32>,
+    // RLE encoded values.
+    pub values: Vec<RleEntry>,
+    pub values_expanded: Vec<u32>
 }
 
 impl FurnitureDesign {
@@ -113,7 +119,9 @@ impl FurnitureDesign {
             }
         });
 
-        dbg!(&values);
+        //dbg!(&values);
+
+        let expanded = FurnitureDesign::expand_values(&values.as_ref().unwrap(), resolution);
 
         FurnitureDesign {
             name: name.to_string(),
@@ -121,17 +129,47 @@ impl FurnitureDesign {
             resolution,
             interactionmode,
             linkeddesign,
-            values: values.unwrap()
+            values: values.unwrap(),
+            values_expanded: expanded
         }
     }
 
     fn parse_values(values: &str) -> Vec<RleEntry> {
         let mut newvalues = vec![];
         for value in values.split(',').filter(|&x| !x.is_empty()) {
-            newvalues.push(RleEntry::deserealize(value));
+            // dbg!(&value);
+            let deserialized = RleEntry::deserealize(value); // SOMEWHERE HERE
+            //dbg!(&deserialized);
+            newvalues.push(deserialized);
         }
-
+        
         newvalues
+    }
+
+
+    /// Expands the RLE encoded block data into a vector of u32.
+    pub fn expand_values(values: &Vec<RleEntry>, resolution: u32) -> Vec<u32> { // FN IS GOOD
+        println!("Expanding values...");
+        println!("Resolution: {}", resolution);
+        let size = usize::pow(resolution.try_into().unwrap(), 3);
+        println!("Size: {}", size);
+        let mut newvalues = vec![];//vec![0; usize::pow(resolution.try_into().unwrap(), 3)];
+        dbg!(&newvalues.len());
+        // panic!();
+
+        for value in values {
+            for _ in 0..value.length {
+                //dbg!(&value);
+                newvalues.push(value.value);
+            }
+        }
+        newvalues
+    }
+
+    pub fn get_mesh(&self) -> crate::rendering::Mesh {
+        let mesh = voxel_mesher::mesh_furniture(&self);
+        // /dbg!(&mesh);
+        mesh
     }
 }
 
@@ -159,13 +197,13 @@ pub struct RleEntry {
 
 impl RleEntry {
     fn deserealize(str: &str) -> RleEntry {
-        dbg!(&str);
+        //dbg!(&str);
         let entry: Vec<u32> = str.split("*")
             .filter(|&x| !x.is_empty()) // Remove empty strings. For some reason there is whitespace at the end of the string.
             .map(|x| x.parse::<u32>().unwrap())
             .collect();
 
-            dbg!(&entry);
+            //dbg!(&entry);
         
         RleEntry {
             length: *entry.get(0).unwrap(),
