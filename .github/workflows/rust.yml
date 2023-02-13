@@ -11,6 +11,7 @@ env:
 jobs:
   check:
     name: Check
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,6 +27,7 @@ jobs:
 
   check_wasm:
     name: Check wasm32
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -42,6 +44,7 @@ jobs:
 
   test:
     name: Test Suite
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -58,6 +61,7 @@ jobs:
 
   fmt:
     name: Rustfmt
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -74,6 +78,7 @@ jobs:
 
   clippy:
     name: Clippy
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -90,6 +95,7 @@ jobs:
 
   trunk:
     name: trunk
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

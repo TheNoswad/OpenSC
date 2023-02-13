@@ -16,6 +16,7 @@ permissions:
 
 jobs:
   build-github-pages:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 # repo checkout
