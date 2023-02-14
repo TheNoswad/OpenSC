@@ -1,16 +1,21 @@
 use core::panic;
 
+use three_d::{CpuMesh, Vector3, Positions, Vec3, Vec2, Indices};
+
 use crate::rendering::{Vertex};
 use crate::furniture::FurnitureDesign;
 
-pub fn mesh_furniture(furniture: &FurnitureDesign) -> crate::rendering::Mesh {
+pub fn mesh_furniture(furniture: &FurnitureDesign) -> CpuMesh {
     let resolution = furniture.resolution;
+    let mut indices = vec![];
 
     // This is the mesh that is being built and returned
-    let mut tempmesh = crate::rendering::Mesh::empty();
+    let mut vertices: Vec<Vec3> = vec![];
 
     // A counter for indices when building the mesh
     let mut indices_count: u32 = 0;
+
+    let mut uvs = vec![];
 
     // A counter for the iterations in the loop
     let mut count = 0;
@@ -30,23 +35,34 @@ pub fn mesh_furniture(furniture: &FurnitureDesign) -> crate::rendering::Mesh {
                     let mut block_mesh = generate_block_mesh(x, y, z, furniture.values_expanded[count], indices_count, [false; 6]);
 
                     // Append mesh vertices to the tempmesh
-                    tempmesh.vertices.append(&mut block_mesh.0);
-                    tempmesh.indices.append(&mut block_mesh.1);
+                    vertices.append(&mut block_mesh.0);
+                    indices.append(&mut block_mesh.1);
+                    uvs.append(&mut block_mesh.2);
 
                     // Add the number of indices in the block mesh to the indices count of the entire chunk
-                    indices_count = block_mesh.2;
+                    indices_count = block_mesh.3;
                 }
                 count += 1;
             }
         }
     }
     //panic!();
-    tempmesh
+    let mesh = CpuMesh {
+        positions: Positions::F32(vertices),
+        normals: None,
+        uvs: Some(uvs),
+        indices: Indices::U32(indices),
+        name: "Sugma".to_owned(),
+        material_name: None,
+        tangents: None,
+        colors: None,
+    };
+    mesh
 }
 
 /// Generate a mesh for a single block.
 /// Returns vertices, indices, and indices count
-pub fn generate_block_mesh(x: u32, y: u32, z: u32, block: u32, indices_count: u32, face_occulsion: [bool; 6]) -> (Vec<Vertex>, Vec<u32>, u32) {
+pub fn generate_block_mesh(x: u32, y: u32, z: u32, block: u32, indices_count: u32, face_occulsion: [bool; 6]) -> (Vec<Vec3>, Vec<u32>, Vec<Vec2>, u32) {
     // Stores the coordinate values of the block as a f32
     let x_as_float = x as f32;
     let y_as_float = y as f32;
@@ -439,12 +455,12 @@ pub fn generate_block_mesh(x: u32, y: u32, z: u32, block: u32, indices_count: u3
     // A vec to store the final vertices
     let mut vertices = vec![]; 
 
-    for (position, texcoords) in vertices_iter {
-        let vertex = Vertex::new(*position, *texcoords);
-        vertices.push(vertex)
-    }
+    // for (position, texcoords) in vertices_iter {
+    //     let vertex = Vertex::new(*position, *texcoords);
+    //     vertices.push(vertex)
+    // }
 
-    return (vertices, indices, indices_count + 8)// og was 8!!!!
+    return (vertices, indices, texcoords, indices_count + 8)// og was 8!!!!
 }
 
 /// Generates a texcoord
@@ -453,6 +469,6 @@ fn texcoord(pos: [f32; 2]) -> [f32; 2] {
 }
 
 /// Generates a vertex
-fn position(pos: [f32; 3]) -> [f32; 3] {
-    pos
+fn position(pos: [f32; 3]) -> Vec3 {
+    Vec3::new(pos[0], pos[1], pos[2])
 }

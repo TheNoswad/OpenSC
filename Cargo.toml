@@ -18,9 +18,12 @@ eframe = { version = "0.20.0", default-features = false, features = [
     "glow",          # Use the glow rendering backend. Alternative: "wgpu".
     "persistence",   # Enable restoring app state when restarting the app.
 ] }
+egui-wgpu = "0.21.0"
 
 # You only need serde if you want app persistence:
 serde = { version = "1", features = ["derive"] }
+bytemuck = "1.13.0"
+three-d = "0.14.0"
 
 # native:
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

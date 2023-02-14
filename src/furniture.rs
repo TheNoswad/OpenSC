@@ -1,9 +1,12 @@
 use std::{path::PathBuf, io::Read, fs::File};
 
+use three_d::CpuMesh;
 use unicode_bom::Bom;
 use xmltree::Element;
 
 use crate::voxel_mesher;
+
+// use crate::voxel_mesher;
 
 pub struct FurnitureDesigns {
     pub values: Vec<FurnitureDesign>,
@@ -166,7 +169,7 @@ impl FurnitureDesign {
         newvalues
     }
 
-    pub fn get_mesh(&self) -> crate::rendering::Mesh {
+    pub fn get_mesh(&self) -> CpuMesh {
         let mesh = voxel_mesher::mesh_furniture(&self);
         // /dbg!(&mesh);
         mesh
